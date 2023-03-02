@@ -65,6 +65,34 @@ params:
       label: "Upload mh :"
       value: FALSE
       input: file
+    data15:
+      label: "Upload dt2 :"
+      value: FALSE
+      input: file
+    data16:
+      label: "Upload dt3 :"
+      value: FALSE
+      input: file
+    data17:
+      label: "Upload dt4 :"
+      value: FALSE
+      input: file
+    data18:
+      label: "Upload dl2 :"
+      value: FALSE
+      input: file
+    data19:
+      label: "Upload ml2 :"
+      value: FALSE
+      input: file
+    data20:
+      label: "Upload sk1 :"
+      value: FALSE
+      input: file
+    data21:
+      label: "Upload sk2 :"
+      value: FALSE
+      input: file
 ---
 <!-- delete all the variables that are there in the environment  rm(list=ls())  -->
 ```{r include=F}
@@ -193,7 +221,7 @@ str_detect(ae1$AEDUR01,regex("Ongoing",ignore_case = T)) & (!is.na(ae1$AEENDT01)
 # Length of Investigator Acknowledgement Date
 str_length(ae1$AEDTC03) != median(str_length(ae1$AEDTC03),na.rm = T),][,-c(1,3,5:13)] %>%
   sjlabelled::label_to_colnames() %>%
-  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "ae1",height = 600,
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "ae1",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
      )
@@ -301,7 +329,7 @@ ae2[
     # method of contact
     !str_detect(str_to_lower(ae2$AERESP01),"in person|telephone|electronic"),][,-c(1,3,5:13)] %>% 
     sjlabelled::label_to_colnames() %>%
-    reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "ae2",height = 600,
+    reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "ae2",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
      )
@@ -404,7 +432,7 @@ str_detect(de$DEORES09,regex("Other",ignore_case = T)) & str_detect(de$DETXT04,"
 # Reader Replaced
 str_detect(de$DEORES07,"[:alpha:]") & (str_detect(de$DESPID01,"^$|pattern") | str_detect(de$DESPID07,"^$|pattern")),][,-c(1,3,5:13)] %>% 
   sjlabelled::label_to_colnames() %>%
-  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "de",height = 600,
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "de",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
      )
@@ -501,7 +529,7 @@ str_detect(dm$RACE,regex("Other",ignore_case = T)) & str_detect(dm$RACE,"^$|patt
 !str_detect(dm$DMDEXT,regex("Right|Left|Ambidextrous",ignore_case = T))
     ,][,-c(1,3,5:13)] %>% 
   sjlabelled::label_to_colnames() %>%
-  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "dm",height = 600,
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "dm",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
      )
@@ -579,7 +607,7 @@ str_detect(du1$DUORES6,"^$|pattern") |
 # If no, select issues
 str_detect(du1$DUORES6,"No") & (str_detect(du1$DUORES7,"^$|pattern")) ,][,-c(1,3,5:13)] %>%
   sjlabelled::label_to_colnames() %>% 
-  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "du1",height = 600,
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "du1",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
      )
@@ -648,7 +676,7 @@ str_detect(du2$DUORES9,"^$|pattern") |
 str_detect(du2$DUORES9,"Yes") & str_detect(du2$DUTM2,"^$|pattern")
       ,][,-c(1,3,5:13)] %>%
   sjlabelled::label_to_colnames() %>%
-  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "du2",height = 600,
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "du2",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
      )
@@ -722,7 +750,7 @@ is.na(du3$DUDTC3) | str_length(du3$DUDTC3) != median(str_length(du3$DUDTC3),na.r
 # Removal Comments if yes 
 str_detect(du3$DUORES17,regex("Yes",ignore_case = T)) & str_detect(du3$DUCOM,"^$|pattern"),][,-c(1,3,5:13)] %>%
   # sjlabelled::label_to_colnames() %>%
-  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "du3",height = 600,
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "du3",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
      )
@@ -781,7 +809,7 @@ is.na(du4$DUDTC4) | str_length(du4$DUDTC4) != median(str_length(du4$DUDTC4),na.r
 # Did the subject experience any insertion site symptoms?
 !str_detect(du4$DUORES19,regex("Yes|No",ignore_case = T)),][,-c(1,3,5:13)] %>%
   sjlabelled::label_to_colnames() %>%
-  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "du4",height = 600,
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "du4",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
      )
@@ -823,7 +851,7 @@ du5[
 !str_detect(du5$DUORES21,regex("Yes|No",ignore_case = T))  |
 # If yes, Date should not be blank or NA
 str_detect(du5$DUORES21,regex("Yes",ignore_case = T)) & is.na(du5$DUORES21),][,-c(1,3,5:13)] %>%   sjlabelled::label_to_colnames() %>%
-  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "du5",height = 600,
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "du5",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
      )
@@ -863,7 +891,7 @@ ie[
 # Date Eligibility verified and Informed Consent signed
 is.na(ie$IEDTC) | str_length(ie$IEDTC) != median(str_length(ie$IEDTC),na.rm = T),][,-c(1,3,5:13)] %>% 
   sjlabelled::label_to_colnames() %>%
-  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "ie",height = 600,
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "ie",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
      )
@@ -905,7 +933,7 @@ mh[
 # If yes,Month Diagnosed with Diabetes,Year diagnosed with diabetes,Type of diabetes
 str_detect(mh$MHORRES2,regex("Yes",ignore_case = T)) & (!str_detect(mh$MHDTC1,regex("Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec",ignore_case = T)) | str_detect(mh$MHDTC2,"^$|pattern") | !str_detect(mh$MHORRES3,regex("Type 1|Type 2",ignore_case = T))),][,-c(1,3,5:13)] %>% 
   sjlabelled::label_to_colnames() %>%
-  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "mh",height = 600,
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "mh",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
      )
@@ -972,7 +1000,7 @@ str_detect(pd$DVACT4,regex("Yes",ignore_case = T)) & str_detect(pd$DVCOM2,"^$|pa
 # Principal Investigator Acknowledgement: Date
 str_length(pd$DVDTC3) != median(str_length(pd$DVDTC3),na.rm = T),][,-c(1,3,5:13)] %>%
   sjlabelled::label_to_colnames() %>%
-  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "pd",height = 600,
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "pd",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
      )
@@ -1045,7 +1073,7 @@ vs[
 # ((vs$VSORRES3 < quantile(vs$VSORRES3,probs = 0.25,names = F,na.rm = T) -1.5*IQR(vs$VSORRES3,na.rm = T) | vs$VSORRES3 > quantile(vs$VSORRES3,probs = 0.75,names = F,na.rm = T) + 1.5*IQR(vs$VSORRES3,na.rm = T)) & str_length(vs$VSORRES3) != 3)
 ,][,-c(1,3,5:13)] %>%
   sjlabelled::label_to_colnames() %>%
-  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "vs",height = 600,
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "vs",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
      )
@@ -1060,3 +1088,381 @@ vs[
 `r if(is.character(params$data10)){knitr::asis_output("2. VSORRES2(Height (inches)) should not be blank")}` `r if(is.character(params$data10)){colorize(vs[is.na(vs$VSORRES2) | str_detect(vs$VSORRES2,"^$|pattern"),]$Subject,"red")}`
 
 `r if(is.character(params$data10)){knitr::asis_output("3. VSORRES1(Height (inches)) has extreme values")}` `r if(is.character(params$data10)){colorize(vs[!(vs$VSORRES2 %in% seq(0,11)),]$Subject,"red")}`
+
+<!-- # DT2 Review -->
+`r if(is.character(params$data15)){knitr::asis_output("# **DT2 Review**")}`
+
+`r if(is.character(params$data15)){htmltools::a("Adhesive Log",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_AdhesiveLog_RevA.pdf")}`
+
+```{r eval = is.character(params$data15)}
+# dt2 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\dt2.sas7bdat)"))
+dt2 <- read_sas(params$data15)
+dt2 <- dt2 %>%
+       mutate(Subject = as.character(Subject)) %>%
+       arrange(Subject)
+```
+
+```{r eval = is.character(params$data15)}
+htmltools::browsable(
+   tagList(
+    tags$button(
+      tagList(fontawesome::fa("download"), "Download as CSV"),
+      onclick = "Reactable.downloadDataCSV('dt2', 'dt2.csv')"
+    ),
+dt2[
+# Adhesive Mount #
+str_detect(dt2$DTALSEQ,"^$|pattern") | 
+# Attachment Location
+!str_detect(dt2$DTALLOC,regex("RA|LA|RUQ|LUQ|RLQ|LLQ|RPH|LPH|RT|LT|RC|LC|OTH",ignore_case = T)) |
+# Adhesive Mount ID
+str_detect(dt2$DTALMID,"^$|pattern") | str_length(dt2$DTALMID) != median(str_length(dt2$DTALMID),na.rm = T) |
+# Adhesive Lot Number
+str_detect(dt2$DTALNUM,"^$|pattern") | str_length(dt2$DTALNUM) != median(str_length(dt2$DTALNUM),na.rm = T) |
+# Date Applied
+str_length(dt2$DTALSDTC) != median(str_length(dt2$DTALSDTC),na.rm = T) | 
+# Time Applied
+str_length(dt2$DTALSTM) != median(str_length(dt2$DTALSTM),na.rm = T) | !str_detect(dt2$DTALSTM,":") |
+# Date Removed
+str_length(dt2$DTALEDTC) != median(str_length(dt2$DTALEDTC),na.rm = T) |
+# Time Removed
+str_length(dt2$DTALETM) != median(str_length(dt2$DTALETM),na.rm = T) | !str_detect(dt2$DTALETM,":"),][,-c(1,3,5:13)] %>%
+  sjlabelled::label_to_colnames() %>%
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "dt2",height = 600,
+     defaultColDef = colDef(align = "center",minWidth = 115),
+     columns = list(Subject = colDef(sticky = "left"))
+     )
+  )
+)
+```
+
+`r if(is.character(params$data15) && is_empty(dt2$Subject)){knitr::asis_output("DT2 is empty")}`
+
+`r if(is.character(params$data15)){knitr::asis_output("1. DTALSEQ(Adhesive Mount #) should not be blank")}` `r if(is.character(params$data15)){colorize(dt2[str_detect(dt2$DTALSEQ,"^$|pattern"),]$Subject,"red")}`
+
+`r if(is.character(params$data15)){knitr::asis_output("2. DTALLOC(Attachment Location) should be RA,LA,RUQ,LUQ,RLQ,LLQ,RPH,LPH,RT,LT,RC,LC and OTH")}` `r if(is.character(params$data15)){colorize(dt2[!str_detect(dt2$DTALLOC,regex("RA|LA|RUQ|LUQ|RLQ|LLQ|RPH|LPH|RT|LT|RC|LC|OTH",ignore_case = T)),]$Subject,"red")}`
+
+`r if(is.character(params$data15)){knitr::asis_output("3. DTALMID(Adhesive Mount ID) should not be blank or has extreme values")}` `r if(is.character(params$data15)){colorize(dt2[str_detect(dt2$DTALMID,"^$|pattern") | str_length(dt2$DTALMID) != median(str_length(dt2$DTALMID),na.rm = T),]$Subject,"red")}`
+
+`r if(is.character(params$data15)){knitr::asis_output("4. DTALNUM(Adhesive Lot Number) should not be blank or has extreme values")}` `r if(is.character(params$data15)){colorize(dt2[str_detect(dt2$DTALNUM,"^$|pattern") | str_length(dt2$DTALNUM) != median(str_length(dt2$DTALNUM),na.rm = T),]$Subject,"red")}`
+
+`r if(is.character(params$data15)){knitr::asis_output("5. The length of DTALSDTC(Date Applied) should be")}` `r if(is.character(params$data15)){median(str_length(dt2$DTALSDTC),na.rm = T)}` `r if(is.character(params$data15)){colorize(dt2[str_length(dt2$DTALSDTC) != median(str_length(dt2$DTALSDTC),na.rm = T),]$Subject,"red")}`
+
+`r if(is.character(params$data15)){knitr::asis_output("6. The length of DTALSTM(Time Applied) should be")}` `r if(is.character(params$data15)){median(str_length(dt2$DTALSTM),na.rm = T)}` `r if(is.character(params$data15)){colorize(dt2[str_length(dt2$DTALSTM) != median(str_length(dt2$DTALSTM),na.rm = T) | !str_detect(dt2$DTALSTM,":"),]$Subject,"red")}`
+
+`r if(is.character(params$data15)){knitr::asis_output("7. The length of DTALEDTC(Date Removed) should be")}` `r if(is.character(params$data15)){median(str_length(dt2$DTALEDTC),na.rm = T)}` `r if(is.character(params$data15)){colorize(dt2[str_length(dt2$DTALEDTC) != median(str_length(dt2$DTALEDTC),na.rm = T),]$Subject,"red")}`
+
+`r if(is.character(params$data15)){knitr::asis_output("8. The length of DTALETM(Time Removed) should be")}` `r if(is.character(params$data15)){median(str_length(dt2$DTALETM),na.rm = T)}` `r if(is.character(params$data15)){colorize(dt2[str_length(dt2$DTALETM) != median(str_length(dt2$DTALETM),na.rm = T) | !str_detect(dt2$DTALETM,":"),]$Subject,"red")}`
+
+<!-- # DT3 Review -->
+`r if(is.character(params$data16)){knitr::asis_output("# **DT3 Review**")}`
+
+`r if(is.character(params$data16)){htmltools::a("Adhesive Log",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_AdhesiveLog_RevA.pdf")}`
+
+```{r eval = is.character(params$data16)}
+# dt3 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\dt3.sas7bdat)"))
+dt3 <- read_sas(params$data16)
+dt3 <- dt3 %>%
+       mutate(Subject = as.character(Subject)) %>%
+       arrange(Subject)
+```
+
+```{r eval = is.character(params$data16)}
+htmltools::browsable(
+   tagList(
+    tags$button(
+      tagList(fontawesome::fa("download"), "Download as CSV"),
+      onclick = "Reactable.downloadDataCSV('dt3', 'dt3.csv')"
+    ),
+dt3[
+# Site Exam Date
+str_length(dt3$DTALDTC1) != median(str_length(dt3$DTALDTC1),na.rm = T) | 
+# Did the subject experience any insertion site symptoms?
+!str_detect(dt3$DTORRES1,regex("Yes|No",ignore_case = T))
+,][,-c(1,3,5:13)] %>%
+  sjlabelled::label_to_colnames() %>%
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "dt3",height = 600,
+     defaultColDef = colDef(align = "center",minWidth = 115),
+     columns = list(Subject = colDef(sticky = "left"))
+     )
+  )
+)
+```
+
+`r if(is.character(params$data16) && is_empty(dt3$Subject)){knitr::asis_output("DT3 is empty")}`
+
+`r if(is.character(params$data16)){knitr::asis_output("1. The length of DTALDTC1(Site Exam Date) should be")}` `r if(is.character(params$data16)){median(str_length(dt3$DTALDTC1),na.rm = T)}` `r if(is.character(params$data16)){colorize(dt3[str_length(dt3$DTALDTC1) != median(str_length(dt3$DTALDTC1),na.rm = T),]$Subject,"red")}`
+
+`r if(is.character(params$data16)){knitr::asis_output("2. DTORRES1(Did the subject experience any insertion site symptoms?) should be either Yes or No")}` `r if(is.character(params$data16)){colorize(dt3[!str_detect(dt3$DTORRES1,regex("Yes|No",ignore_case = T)),]$Subject,"red")}`
+
+<!-- # DT4 Review -->
+`r if(is.character(params$data17)){knitr::asis_output("# **DT4 Review**")}`
+
+`r if(is.character(params$data17)){htmltools::a("Adhesive Log",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_AdhesiveLog_RevA.pdf")}`
+
+```{r eval = is.character(params$data17)}
+# dt4 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\dt4.sas7bdat)"))
+dt4 <- read_sas(params$data17)
+dt4 <- dt4 %>%
+       mutate(Subject = as.character(Subject)) %>%
+       arrange(Subject)
+```
+
+```{r eval = is.character(params$data17)}
+htmltools::browsable(
+   tagList(
+    tags$button(
+      tagList(fontawesome::fa("download"), "Download as CSV"),
+      onclick = "Reactable.downloadDataCSV('dt4', 'dt4.csv')"
+    ),
+dt4[
+# Site Exam Date
+str_length(dt4$DTALDTC3) != median(str_length(dt4$DTALDTC3),na.rm = T) | 
+# Did the subject experience any insertion site symptoms?
+!str_detect(dt4$DTORRES3,regex("Yes|No",ignore_case = T))
+,][,-c(1,3,5:13)] %>%
+  sjlabelled::label_to_colnames() %>%
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "dt4",height = 600,
+     defaultColDef = colDef(align = "center",minWidth = 115),
+     columns = list(Subject = colDef(sticky = "left"))
+     )
+  )
+)
+```
+
+`r if(is.character(params$data17) && is_empty(dt4$Subject)){knitr::asis_output("DT4 is empty")}`
+
+`r if(is.character(params$data17)){knitr::asis_output("1. The length of DTALDTC3(Site Exam Date) should be")}` `r if(is.character(params$data17)){median(str_length(dt4$DTALDTC3),na.rm = T)}` `r if(is.character(params$data17)){colorize(dt4[str_length(dt4$DTALDTC3) != median(str_length(dt4$DTALDTC3),na.rm = T),]$Subject,"red")}`
+
+`r if(is.character(params$data17)){knitr::asis_output("2. DTORRES3(Did the subject experience any insertion site symptoms?) should be either Yes or No")}` `r if(is.character(params$data17)){colorize(dt4[!str_detect(dt4$DTORRES3,regex("Yes|No",ignore_case = T)),]$Subject,"red")}`
+
+<!-- # DL2 Review -->
+`r if(is.character(params$data18)){knitr::asis_output("# **DL2 Review**")}`
+
+`r if(is.character(params$data18)){htmltools::a("Daily Activity Log",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_DailyActivityLog_RevA.pdf")}`
+
+```{r eval = is.character(params$data18)}
+# dl2 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\dl2.sas7bdat)"))
+dl2 <- read_sas(params$data18)
+dl2 <- dl2 %>%
+       mutate(Subject = as.character(Subject)) %>%
+       arrange(Subject)
+```
+
+```{r eval = is.character(params$data18)}
+htmltools::browsable(
+   tagList(
+    tags$button(
+      tagList(fontawesome::fa("download"), "Download as CSV"),
+      onclick = "Reactable.downloadDataCSV('dl2', 'dl2.csv')"
+    ),
+dl2[
+# Date of Activity
+str_length(dl2$DRDLDTC) != median(str_length(dl2$DRDLDTC),na.rm = T) | 
+# Time of Activity
+str_length(dl2$DRDLATM) != median(str_length(dl2$DRDLATM),na.rm = T) | !str_detect(dl2$DRDLATM,":") |
+# Adhesive #
+str_detect(dl2$DRDLSEQ,"^$|pattern") | str_length(dl2$DRDLSEQ) != median(str_length(dl2$DRDLSEQ),na.rm = T) |
+# Activity
+!str_detect(dl2$DRDLACT,regex("Bathing or showering|Dressing or changing clothes|Housework, yard work or chores|Exercise or swimming|Other",ignore_case = T)) | 
+# Activity is Other
+str_detect(dl2$DRDLACT,regex("Other",ignore_case = T)) & str_detect(dl2$DRDLACTO,"^$|pattern") |
+# Perspiration Level
+!str_detect(dl2$DRDLPER,regex("NA|Low|Moderate|Heavy",ignore_case = T)) | 
+# Description
+!str_detect(dl2$DRDLDESC,regex("Unnoticed|Discomfort|Device loosened or began to come off|Device came off",ignore_case = T))
+,][,-c(1,3,5:13)] %>%
+  sjlabelled::label_to_colnames() %>%
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "dl2",height = 600,
+     defaultColDef = colDef(align = "center",minWidth = 115),
+     columns = list(Subject = colDef(sticky = "left"))
+     )
+  )
+)
+```
+
+`r if(is.character(params$data18) && is_empty(dl2$Subject)){knitr::asis_output("DL2 is empty")}`
+
+`r if(is.character(params$data18)){knitr::asis_output("1. The length of DRDLDTC(Date of Activity) should be")}` `r if(is.character(params$data18)){median(str_length(dl2$DRDLDTC),na.rm = T)}` `r if(is.character(params$data18)){colorize(dl2[str_length(dl2$DRDLDTC) != median(str_length(dl2$DRDLDTC),na.rm = T),]$Subject,"red")}`
+
+`r if(is.character(params$data18)){knitr::asis_output("2. The length of DRDLATM(Time of Activity) should be")}` `r if(is.character(params$data18)){median(str_length(dl2$DRDLATM),na.rm = T)}` `r if(is.character(params$data18)){colorize(dl2[str_length(dl2$DRDLATM) != median(str_length(dl2$DRDLATM),na.rm = T) | !str_detect(dl2$DRDLATM,":"),]$Subject,"red")}`
+
+`r if(is.character(params$data18)){knitr::asis_output("3. DRDLSEQ(Adhesive #) should not be blank or has extreme values")}` `r if(is.character(params$data18)){colorize(dl2[str_detect(dl2$DRDLSEQ,"^$|pattern") | str_length(dl2$DRDLSEQ) != median(str_length(dl2$DRDLSEQ),na.rm = T),]$Subject,"red")}`
+
+`r if(is.character(params$data18)){knitr::asis_output("4. DRDLACT(Activity) should be Bathing or showering, Dressing or changing clothes, Housework, yard work or chores, Exercise or swimming, Other")}` `r if(is.character(params$data18)){colorize(dl2[!str_detect(dl2$DRDLACT,regex("Bathing or showering|Dressing or changing clothes|Housework, yard work or chores|Exercise or swimming|Other",ignore_case = T)),]$Subject,"red")}`
+
+`r if(is.character(params$data18)){knitr::asis_output("5. If DRDLACT(Activity) is Other, DRDLACTO(Other Activity) should not be blank")}` `r if(is.character(params$data18)){colorize(dl2[str_detect(dl2$DRDLACT,regex("Other",ignore_case = T)) & str_detect(dl2$DRDLACTO,"^$|pattern"),]$Subject,"red")}`
+
+`r if(is.character(params$data18)){knitr::asis_output("6. DRDLPER(Perspiration Level) should be NA, Low, Moderate, and Heavy")}` `r if(is.character(params$data18)){colorize(dl2[!str_detect(dl2$DRDLPER,regex("NA|Low|Moderate|Heavy",ignore_case = T)),]$Subject,"red")}`
+
+`r if(is.character(params$data18)){knitr::asis_output("7. DRDLDESC(Description) should be Unnoticed, Discomfort, Device loosened or began to come off, and Device came off")}` `r if(is.character(params$data18)){colorize(dl2[!str_detect(dl2$DRDLDESC,regex("Unnoticed|Discomfort|Device loosened or began to come off|Device came off",ignore_case = T)),]$Subject,"red")}`
+
+<!-- # ML2 Review -->
+`r if(is.character(params$data19)){knitr::asis_output("# **ML2 Review**")}`
+
+`r if(is.character(params$data19)){htmltools::a("Meal and Activity Log",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_MAL_RevA.pdf")}`
+
+```{r eval = is.character(params$data19)}
+# ml2 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\ml2.sas7bdat)"))
+ml2 <- read_sas(params$data19)
+ml2 <- ml2 %>%
+       mutate(Subject = as.character(Subject)) %>%
+       arrange(Subject)
+```
+
+```{r eval = is.character(params$data19)}
+htmltools::browsable(
+   tagList(
+    tags$button(
+      tagList(fontawesome::fa("download"), "Download as CSV"),
+      onclick = "Reactable.downloadDataCSV('ml2', 'ml2.csv')"
+    ),
+ml2[
+# Date
+str_length(ml2$MLDTC) != median(str_length(ml2$MLDTC),na.rm = T) | 
+# Time
+str_length(ml2$MLTM) != median(str_length(ml2$MLTM),na.rm = T) | !str_detect(ml2$MLTM,":") |
+# Meal Beverage Snack
+(str_detect(ml2$MLORES01,"^$|pattern") &  str_detect(ml2$MLORES02,"^$|pattern") & str_detect(ml2$MLORES03,"^$|pattern")) |
+# Walk Cycling Stretching Aerobics Run Weights Other
+(str_detect(ml2$MLORES05,"^$|pattern") & str_detect(ml2$MLORES06,"^$|pattern") & str_detect(ml2$MLORES07,"^$|pattern") & str_detect(ml2$MLORES08,"^$|pattern") &  str_detect(ml2$MLORES09,"^$|pattern") & str_detect(ml2$MLORES10,"^$|pattern") & str_detect(ml2$MLORES11,"^$|pattern")) | 
+# Activity is Other
+str_detect(ml2$MLORES11,regex("Other",ignore_case = T)) & str_detect(ml2$MLOTH,"^$|pattern") 
+,][,-c(1,3,5:13)] %>%
+  sjlabelled::label_to_colnames() %>%
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "ml2",height = 600,
+     defaultColDef = colDef(align = "center",minWidth = 115),
+     columns = list(Subject = colDef(sticky = "left"))
+     )
+  )
+)
+```
+
+`r if(is.character(params$data19) && is_empty(ml2$Subject)){knitr::asis_output("ML2 is empty")}`
+
+`r if(is.character(params$data19)){knitr::asis_output("1. The length of MLDTC(Date) should be")}` `r if(is.character(params$data19)){median(str_length(ml2$MLDTC),na.rm = T)}` `r if(is.character(params$data19)){colorize(ml2[str_length(ml2$MLDTC) != median(str_length(ml2$MLDTC),na.rm = T),]$Subject,"red")}`
+
+`r if(is.character(params$data19)){knitr::asis_output("2. The length of MLTM(Time) should be")}` `r if(is.character(params$data19)){median(str_length(ml2$MLTM),na.rm = T)}` `r if(is.character(params$data19)){colorize(ml2[str_length(ml2$MLTM) != median(str_length(ml2$MLTM),na.rm = T) | !str_detect(ml2$MLTM,":"),]$Subject,"red")}`
+
+`r if(is.character(params$data19)){knitr::asis_output("3. MLORES01(Meal), MLORES02(Beverage), and MLORES03(Snack) should not be blank at the same time")}` `r if(is.character(params$data19)){colorize(ml2[(str_detect(ml2$MLORES01,"^$|pattern") &  str_detect(ml2$MLORES02,"^$|pattern") & str_detect(ml2$MLORES03,"^$|pattern")),]$Subject,"red")}`
+
+`r if(is.character(params$data19)){knitr::asis_output("4. MLORES05(Walk) MLORES06(Cycling) MLORES07(Stretching) MLORES08(Aerobics) MLORES09(Run) MLORES10(Weights) MLORES11(Other) should not be blanck at the same time")}` `r if(is.character(params$data19)){colorize(ml2[(str_detect(ml2$MLORES05,"^$|pattern") & str_detect(ml2$MLORES06,"^$|pattern") & str_detect(ml2$MLORES07,"^$|pattern") & str_detect(ml2$MLORES08,"^$|pattern") &  str_detect(ml2$MLORES09,"^$|pattern") & str_detect(ml2$MLORES10,"^$|pattern") & str_detect(ml2$MLORES11,"^$|pattern")),]$Subject,"red")}`
+
+`r if(is.character(params$data19)){knitr::asis_output("5. If MLORES11(Activity) is Other, MLOTH(Other Activity) should not be blank")}` `r if(is.character(params$data19)){colorize(ml2[str_detect(ml2$MLORES11,regex("Other",ignore_case = T)) & str_detect(ml2$MLOTH,"^$|pattern") ,]$Subject,"red")}`
+
+<!-- # SK1 Review -->
+`r if(is.character(params$data20)){knitr::asis_output("# **SK1 Review**")}`
+
+`r if(is.character(params$data20)){htmltools::a("Skin Assessment",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_SkinAssess_RevA.pdf")}`
+
+```{r eval = is.character(params$data20)}
+# sk1 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\sk1.sas7bdat)"))
+sk1 <- read_sas(params$data20)
+sk1 <- sk1 %>%
+       filter(!str_detect(PEYN,regex("Check Here If No Data Recorded",ignore_case = T))) %>%
+       mutate(Subject = as.character(Subject)) %>%
+       arrange(Subject)
+```
+
+```{r eval = is.character(params$data20)}
+htmltools::browsable(
+   tagList(
+    tags$button(
+      tagList(fontawesome::fa("download"), "Download as CSV"),
+      onclick = "Reactable.downloadDataCSV('sk1', 'sk1.csv')"
+    ),
+sk1[
+# Date
+str_length(sk1$PEDTC) != median(str_length(sk1$PEDTC),na.rm = T),][,-c(1,3,5:13)] %>%
+  sjlabelled::label_to_colnames() %>%
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "sk1",height = 600,
+     defaultColDef = colDef(align = "center",minWidth = 115),
+     columns = list(Subject = colDef(sticky = "left"))
+     )
+  )
+)
+```
+
+`r if(is.character(params$data20) && is_empty(sk1$Subject)){knitr::asis_output("SK1 is empty")}`
+
+`r if(is.character(params$data20)){knitr::asis_output("1. The length of PEDTC(Date) should be")}` `r if(is.character(params$data20)){median(str_length(sk1$PEDTC),na.rm = T)}` `r if(is.character(params$data20)){colorize(sk1[str_length(sk1$PEDTC) != median(str_length(sk1$PEDTC),na.rm = T),]$Subject,"red")}`
+
+<!-- # SK2 Review -->
+`r if(is.character(params$data21)){knitr::asis_output("# **SK2 Review**")}`
+
+`r if(is.character(params$data21)){htmltools::a("Skin Assessment",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_SkinAssess_RevA.pdf")}`
+
+```{r eval = is.character(params$data21)}
+# sk2 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\sk2.sas7bdat)"))
+sk2 <- read_sas(params$data21)
+sk2 <- sk2 %>%
+       mutate(Subject = as.character(Subject)) %>%
+       arrange(Subject)
+```
+
+```{r eval = is.character(params$data21)}
+htmltools::browsable(
+   tagList(
+    tags$button(
+      tagList(fontawesome::fa("download"), "Download as CSV"),
+      onclick = "Reactable.downloadDataCSV('sk1', 'sk1.csv')"
+    ),
+sk2[
+# Assessment Site
+!str_detect(sk2$PELOC,regex("LA|RA",ignore_case = T)) | 
+# General skin tone score
+!str_detect(sk2$PEORRES1,regex("1=Poor|2=Average|3=Good",ignore_case = T)) | 
+# Cellulite score
+!str_detect(sk2$PEORRES2,regex("1=Significant|2=Average|3=Minor",ignore_case = T)) |
+# Fine Lines Wrinkles score
+!str_detect(sk2$PEORRES3,regex("1=Significant|2=Average|3=Minor",ignore_case = T)) |
+# Hair Coverage score
+!str_detect(sk2$PEORRES4,regex("1=Significant|2=Non-significant",ignore_case = T)) |
+# Dry Skin score
+!str_detect(sk2$PEORRES5,regex("1=Significant|2=Non-significant",ignore_case = T)) |
+# Scabbing score
+!str_detect(sk2$PEORRES6,regex("Yes|No",ignore_case = T)) | 
+# If Scabbing score is Yes
+str_detect(sk2$PEORRES6,regex("Yes",ignore_case = T)) & str_detect(sk2$PEORRES7,"^$|pattern") |
+# Scarring score
+!str_detect(sk2$PEORRES8,regex("Yes|No",ignore_case = T)) | 
+# If Scarring score is Yes
+str_detect(sk2$PEORRES8,regex("Yes",ignore_case = T)) & str_detect(sk2$PEORRES9,"^$|pattern") | 
+# Hypo/Hyperpigmentation score
+!str_detect(sk2$PEORES10,regex("Yes|No",ignore_case = T)) | 
+# If Hypo/Hyperpigmentation score is Yes
+str_detect(sk2$PEORES10,regex("Yes",ignore_case = T)) & str_detect(sk2$PEORES11,"^$|pattern")
+  ,][,-c(1,3,5:13)] %>%
+  sjlabelled::label_to_colnames() %>%
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "sk1",height = 600,
+     defaultColDef = colDef(align = "center",minWidth = 115),
+     columns = list(Subject = colDef(sticky = "left"))
+     )
+  )
+)
+```
+
+`r if(is.character(params$data21) && is_empty(sk2$Subject)){knitr::asis_output("SK2 is empty")}`
+
+`r if(is.character(params$data21)){knitr::asis_output("1. PELOC(Assessment Site) should be either RA or LA")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PELOC,regex("LA|RA",ignore_case = T)),]$Subject,"red")}`
+
+`r if(is.character(params$data21)){knitr::asis_output("2. PEORRES1(General skin tone score) should be 1=Poor, 2=Average, abd 3=Good")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PEORRES1,regex("1=Poor|2=Average|3=Good",ignore_case = T)),]$Subject,"red")}`
+
+`r if(is.character(params$data21)){knitr::asis_output("3. PEORRES2(Cellulite score) should be 1=Significant, 2=Average, abd 3=Minor")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PEORRES2,regex("1=Significant|2=Average|3=Minor",ignore_case = T)),]$Subject,"red")}`
+
+`r if(is.character(params$data21)){knitr::asis_output("4. PEORRES3(Fine Lines Wrinkles score) should be 1=Significant, 2=Average, abd 3=Minor")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PEORRES3,regex("1=Significant|2=Average|3=Minor",ignore_case = T)),]$Subject,"red")}`
+
+`r if(is.character(params$data21)){knitr::asis_output("5. PEORRES4(Hair Coverage score) should be either 1=Significant(shaving required) or 2=Non-significant")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PEORRES4,regex("1=Significant|2=Non-significant",ignore_case = T)),]$Subject,"red")}`
+
+`r if(is.character(params$data21)){knitr::asis_output("6. PEORRES5(Dry Skin score) should be either 1=Significant(Flaky) or 2=Non-significant")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PEORRES5,regex("1=Significant|2=Non-significant",ignore_case = T)),]$Subject,"red")}`
+
+`r if(is.character(params$data21)){knitr::asis_output("7. PEORRES6(Scabbing score) should be either Yes or No")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PEORRES6,regex("Yes|No",ignore_case = T)),]$Subject,"red")}`
+
+`r if(is.character(params$data21)){knitr::asis_output("8. If PEORRES6(Scabbing score) is Yes, PEORRES7(Scabbing Area (cm2)) should not be blank")}` `r if(is.character(params$data21)){colorize(sk2[str_detect(sk2$PEORRES6,regex("Yes",ignore_case = T)) & str_detect(sk2$PEORRES7,"^$|pattern"),]$Subject,"red")}`
+
+`r if(is.character(params$data21)){knitr::asis_output("9. PEORRES8(Scarring score) should be either Yes or No")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PEORRES8,regex("Yes|No",ignore_case = T)),]$Subject,"red")}`
+
+`r if(is.character(params$data21)){knitr::asis_output("10. If PEORRES8(Scarring score) is Yes, PEORRES9(Scarring Area (cm2)) should not be blank")}` `r if(is.character(params$data21)){colorize(sk2[str_detect(sk2$PEORRES8,regex("Yes",ignore_case = T)) & str_detect(sk2$PEORRES9,"^$|pattern"),]$Subject,"red")}`
+
+`r if(is.character(params$data21)){knitr::asis_output("11. PEORES10(Hypo/Hyperpigmentation score) should be either Yes or No")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PEORES10,regex("Yes|No",ignore_case = T)),]$Subject,"red")}`
+
+`r if(is.character(params$data21)){knitr::asis_output("12. If PEORES10(Hypo/Hyperpigmentation score) is Yes, PEORES11(Hypo/Hyperpigmentation Area (cm2)) should not be blank")}` `r if(is.character(params$data21)){colorize(sk2[str_detect(sk2$PEORES10,regex("Yes",ignore_case = T)) & str_detect(sk2$PEORES11,"^$|pattern"),]$Subject,"red")}`

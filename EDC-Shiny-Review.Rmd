@@ -139,7 +139,7 @@ colorize <- function(x, color) {
 
 `r if(is.character(params$data1)){htmltools::a("Adverse Event Report",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_AE_RevA.pdf")}`
 
-```{r eval = is.character(params$data1)}
+```{r Load ae1, eval = is.character(params$data1)}
 # ae1 <- read_sas(gsub("\\\\", "/",r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\088\ae1.sas7bdat)"))
 ae1 <- read_sas(params$data1)
 ae1 <- ae1 %>%
@@ -148,7 +148,7 @@ ae1 <- ae1 %>%
        arrange(Subject)
 ```
 
-```{r eval=is.character(params$data1)}
+```{r ae1, eval=is.character(params$data1)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -301,7 +301,7 @@ str_length(ae1$AEDTC03) != median(str_length(ae1$AEDTC03),na.rm = T),][,-c(1,3,5
 
 <!-- [Adverse Event Report](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_AE_RevA.pdf) -->
 
-```{r eval = is.character(params$data2)}
+```{r Load ae2, eval = is.character(params$data2)}
 # ae2 <- read_sas(gsub("\\\\", "/",r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\102\ae2.sas7bdat)"))
 ae2 <- read_sas(params$data2)
 ae2 <- ae2 %>%
@@ -312,7 +312,7 @@ ae2 <- ae2 %>%
        arrange(Subject)
 ```
 
-```{r eval = is.character(params$data2)}
+```{r ae2, eval = is.character(params$data2)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -371,7 +371,7 @@ ae2[
 
 <!-- [Device Incident Report](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_DIR_RevA.pdf) -->
 
-```{r eval = is.character(params$data4)}
+```{r Load de, eval = is.character(params$data4)}
 # de <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\088\de.sas7bdat)"))
 de <- read_sas(params$data4)
 de <- de %>%
@@ -380,7 +380,7 @@ de <- de %>%
       arrange(Subject)
 ```
 
-```{r eval = is.character(params$data4)}
+```{r de, eval = is.character(params$data4)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -491,7 +491,7 @@ str_detect(de$DEORES07,"[:alpha:]") & (str_detect(de$DESPID01,"^$|pattern") | st
 
 <!-- [Subject Characteristics](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_Characteristics_RevA.pdf) -->
 
-```{r eval = is.character(params$data5)}
+```{r Load dm, eval = is.character(params$data5)}
 # dm <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\089\dm.sas7bdat)"))
 dm <- read_sas(params$data5)
 dm <- dm %>% 
@@ -499,7 +499,7 @@ dm <- dm %>%
       arrange(Subject)
 ```
 
-```{r eval = is.character(params$data5)}
+```{r dm, eval = is.character(params$data5)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -566,7 +566,7 @@ str_detect(dm$RACE,regex("Other",ignore_case = T)) & str_detect(dm$RACE,"^$|patt
 
 <!-- [Sensor Use](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_Sensor_Use_RevA.pdf) -->
 
-```{r eval = is.character(params$data6)}
+```{r Load du1, eval = is.character(params$data6)}
 # du1 <- read_sas(gsub("\\\\", "/",r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\088\du1.sas7bdat)"))
 du1 <- read_sas(params$data6)
 du1 <- du1 %>%
@@ -575,7 +575,7 @@ du1 <- du1 %>%
        arrange(Subject)
 ```
 
-```{r eval = is.character(params$data6)}
+```{r du1, eval = is.character(params$data6)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -649,7 +649,7 @@ str_detect(du1$DUORES6,"No") & (str_detect(du1$DUORES7,"^$|pattern")) ,][,-c(1,3
 
 <!-- [Sensor Use](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_Sensor_Use_RevA.pdf) -->
 
-```{r eval = is.character(params$data7)}
+```{r Load du2, eval = is.character(params$data7)}
 # du2 <- read_sas(gsub("\\\\", "/",r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\102\du2.sas7bdat)"))
 du2 <- read_sas(params$data7)
 du2 <- du2 %>% 
@@ -659,7 +659,7 @@ du2 <- du2 %>%
        arrange(Subject)
 ```
 
-```{r eval = is.character(params$data7)}
+```{r du2, eval = is.character(params$data7)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -701,7 +701,7 @@ str_detect(du2$DUORES9,"Yes") & str_detect(du2$DUTM2,"^$|pattern")
 
 <!-- [Sensor Use](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_Sensor_Use_RevA.pdf) -->
 
-```{r eval = is.character(params$data8)}
+```{r Load du3, eval = is.character(params$data8)}
 # du3 <- read_sas(gsub("\\\\", "/",r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\102\du3.sas7bdat)"))
 du3 <- read_sas(params$data8)
 if (any(str_detect(du3$`__STUDYOID`,"083"))) {
@@ -721,7 +721,7 @@ if (any(str_detect(du3$`__STUDYOID`,"083"))) {
 }
 ```
 
-```{r eval = is.character(params$data8)}
+```{r du3, eval = is.character(params$data8)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -787,7 +787,7 @@ str_detect(du3$DUORES17,regex("Yes",ignore_case = T)) & str_detect(du3$DUCOM,"^$
 
 <!-- [Sensor Use](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_Sensor_Use_RevA.pdf) -->
 
-```{r eval = is.character(params$data11)}
+```{r Load du4, eval = is.character(params$data11)}
 # du4 <- read_sas(gsub("\\\\", "/",r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\102\du4.sas7bdat)"))
 du4 <- read_sas(params$data11)
 du4 <- du4 %>% 
@@ -796,7 +796,7 @@ du4 <- du4 %>%
        arrange(Subject)
 ```
 
-```{r eval = is.character(params$data11)}
+```{r du4, eval = is.character(params$data11)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -830,7 +830,7 @@ is.na(du4$DUDTC4) | str_length(du4$DUDTC4) != median(str_length(du4$DUDTC4),na.r
 
 <!-- [Sensor Use](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_Sensor_Use_RevA.pdf) -->
 
-```{r eval = is.character(params$data12)}
+```{r Load du5, eval = is.character(params$data12)}
 # du5 <- read_sas(gsub("\\\\", "/",r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\102\du5.sas7bdat)"))
 du5 <- read_sas(params$data12)
 du5 <- du5 %>% 
@@ -839,7 +839,7 @@ du5 <- du5 %>%
        arrange(Subject)
 ```
 
-```{r eval = is.character(params$data12)}
+```{r du5, eval = is.character(params$data12)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -872,7 +872,7 @@ str_detect(du5$DUORES21,regex("Yes",ignore_case = T)) & is.na(du5$DUORES21),][,-
 
 <!-- [Subject Characteristics](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_Characteristics_RevA.pdf) -->
 
-```{r eval = is.character(params$data13)}
+```{r Load ie, eval = is.character(params$data13)}
 # ie <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\096\ie.sas7bdat)"))
 ie <- read_sas(params$data13)
 ie <- ie %>% 
@@ -880,7 +880,7 @@ ie <- ie %>%
       arrange(Subject)
 ```
 
-```{r eval = is.character(params$data13)}
+```{r ie, eval = is.character(params$data13)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -910,7 +910,7 @@ is.na(ie$IEDTC) | str_length(ie$IEDTC) != median(str_length(ie$IEDTC),na.rm = T)
 
 <!-- [Subject Characteristics](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_Characteristics_RevA.pdf) -->
 
-```{r eval = is.character(params$data14)}
+```{r Load mh, eval = is.character(params$data14)}
 # mh <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\091\mh.sas7bdat)"))
 mh <- read_sas(params$data14)
 mh <- mh %>% 
@@ -918,7 +918,7 @@ mh <- mh %>%
       arrange(Subject)
 ```
 
-```{r eval = is.character(params$data14)}
+```{r mh, eval = is.character(params$data14)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -955,7 +955,7 @@ str_detect(mh$MHORRES2,regex("Yes",ignore_case = T)) & (!str_detect(mh$MHDTC1,re
 `r if(is.character(params$data9)){htmltools::a("Protocol Deviation Report",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_PD_RevA.pdf")}`
 <!-- [Protocol Deviation Report](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_PD_RevA.pdf) -->
 
-```{r eval = is.character(params$data9)}
+```{r Load pd, eval = is.character(params$data9)}
 # pd <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\088\pd.sas7bdat)"))
 pd <- read_sas(params$data9)
 pd <- pd %>% 
@@ -964,7 +964,7 @@ pd <- pd %>%
       arrange(Subject)
 ```
 
-```{r eval = is.character(params$data9)}
+```{r pd, eval = is.character(params$data9)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -1043,7 +1043,7 @@ str_length(pd$DVDTC3) != median(str_length(pd$DVDTC3),na.rm = T),][,-c(1,3,5:13)
 
 <!-- [Subject Characteristics](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_Characteristics_RevA.pdf) -->
 
-```{r eval = is.character(params$data10)}
+```{r Load vs, eval = is.character(params$data10)}
 # vs <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\095\vs.sas7bdat)"))
 vs <- read_sas(params$data10)
 vs <- vs %>% 
@@ -1051,7 +1051,7 @@ vs <- vs %>%
       arrange(Subject)
 ```
 
-```{r eval = is.character(params$data10)}
+```{r vs, eval = is.character(params$data10)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -1094,7 +1094,7 @@ vs[
 
 `r if(is.character(params$data15)){htmltools::a("Adhesive Log",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_AdhesiveLog_RevA.pdf")}`
 
-```{r eval = is.character(params$data15)}
+```{r Load dt2, eval = is.character(params$data15)}
 # dt2 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\dt2.sas7bdat)"))
 dt2 <- read_sas(params$data15)
 dt2 <- dt2 %>%
@@ -1102,7 +1102,7 @@ dt2 <- dt2 %>%
        arrange(Subject)
 ```
 
-```{r eval = is.character(params$data15)}
+```{r dt2, eval = is.character(params$data15)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -1158,7 +1158,7 @@ str_length(dt2$DTALETM) != median(str_length(dt2$DTALETM),na.rm = T) | !str_dete
 
 `r if(is.character(params$data16)){htmltools::a("Adhesive Log",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_AdhesiveLog_RevA.pdf")}`
 
-```{r eval = is.character(params$data16)}
+```{r Load dt3, eval = is.character(params$data16)}
 # dt3 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\dt3.sas7bdat)"))
 dt3 <- read_sas(params$data16)
 dt3 <- dt3 %>%
@@ -1166,7 +1166,7 @@ dt3 <- dt3 %>%
        arrange(Subject)
 ```
 
-```{r eval = is.character(params$data16)}
+```{r dt3, eval = is.character(params$data16)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -1199,7 +1199,7 @@ str_length(dt3$DTALDTC1) != median(str_length(dt3$DTALDTC1),na.rm = T) |
 
 `r if(is.character(params$data17)){htmltools::a("Adhesive Log",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_AdhesiveLog_RevA.pdf")}`
 
-```{r eval = is.character(params$data17)}
+```{r Load dt4, eval = is.character(params$data17)}
 # dt4 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\dt4.sas7bdat)"))
 dt4 <- read_sas(params$data17)
 dt4 <- dt4 %>%
@@ -1207,7 +1207,7 @@ dt4 <- dt4 %>%
        arrange(Subject)
 ```
 
-```{r eval = is.character(params$data17)}
+```{r dt4, eval = is.character(params$data17)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -1240,7 +1240,7 @@ str_length(dt4$DTALDTC3) != median(str_length(dt4$DTALDTC3),na.rm = T) |
 
 `r if(is.character(params$data18)){htmltools::a("Daily Activity Log",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_DailyActivityLog_RevA.pdf")}`
 
-```{r eval = is.character(params$data18)}
+```{r Load dl2, eval = is.character(params$data18)}
 # dl2 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\dl2.sas7bdat)"))
 dl2 <- read_sas(params$data18)
 dl2 <- dl2 %>%
@@ -1248,7 +1248,7 @@ dl2 <- dl2 %>%
        arrange(Subject)
 ```
 
-```{r eval = is.character(params$data18)}
+```{r dl2, eval = is.character(params$data18)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -1301,7 +1301,7 @@ str_detect(dl2$DRDLACT,regex("Other",ignore_case = T)) & str_detect(dl2$DRDLACTO
 
 `r if(is.character(params$data19)){htmltools::a("Meal and Activity Log",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_MAL_RevA.pdf")}`
 
-```{r eval = is.character(params$data19)}
+```{r Load ml2, eval = is.character(params$data19)}
 # ml2 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\ml2.sas7bdat)"))
 ml2 <- read_sas(params$data19)
 ml2 <- ml2 %>%
@@ -1309,7 +1309,7 @@ ml2 <- ml2 %>%
        arrange(Subject)
 ```
 
-```{r eval = is.character(params$data19)}
+```{r ml2, eval = is.character(params$data19)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -1354,7 +1354,7 @@ str_detect(ml2$MLORES11,regex("Other",ignore_case = T)) & str_detect(ml2$MLOTH,"
 
 `r if(is.character(params$data20)){htmltools::a("Skin Assessment",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_SkinAssess_RevA.pdf")}`
 
-```{r eval = is.character(params$data20)}
+```{r Load sk1, eval = is.character(params$data20)}
 # sk1 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\sk1.sas7bdat)"))
 sk1 <- read_sas(params$data20)
 sk1 <- sk1 %>%
@@ -1363,7 +1363,7 @@ sk1 <- sk1 %>%
        arrange(Subject)
 ```
 
-```{r eval = is.character(params$data20)}
+```{r sk1, eval = is.character(params$data20)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -1391,7 +1391,7 @@ str_length(sk1$PEDTC) != median(str_length(sk1$PEDTC),na.rm = T),][,-c(1,3,5:13)
 
 `r if(is.character(params$data21)){htmltools::a("Skin Assessment",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_SkinAssess_RevA.pdf")}`
 
-```{r eval = is.character(params$data21)}
+```{r Load sk2, eval = is.character(params$data21)}
 # sk2 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\sk2.sas7bdat)"))
 sk2 <- read_sas(params$data21)
 sk2 <- sk2 %>%
@@ -1399,7 +1399,7 @@ sk2 <- sk2 %>%
        arrange(Subject)
 ```
 
-```{r eval = is.character(params$data21)}
+```{r sk2, eval = is.character(params$data21)}
 htmltools::browsable(
    tagList(
     tags$button(
@@ -1416,9 +1416,9 @@ sk2[
 # Fine Lines Wrinkles score
 !str_detect(sk2$PEORRES3,regex("1=Significant|2=Average|3=Minor",ignore_case = T)) |
 # Hair Coverage score
-!str_detect(sk2$PEORRES4,regex("1=Significant|2=Non-significant",ignore_case = T)) |
+!str_detect(sk2$PEORRES4,regex("1=Significant\\(shaving required\\)|2=Non-significant",ignore_case = T)) |
 # Dry Skin score
-!str_detect(sk2$PEORRES5,regex("1=Significant|2=Non-significant",ignore_case = T)) |
+!str_detect(sk2$PEORRES5,regex("1=Significant\\(Flaky\\)|2=Non-significant",ignore_case = T)) |
 # Scabbing score
 !str_detect(sk2$PEORRES6,regex("Yes|No",ignore_case = T)) | 
 # If Scabbing score is Yes
@@ -1451,9 +1451,9 @@ str_detect(sk2$PEORES10,regex("Yes",ignore_case = T)) & str_detect(sk2$PEORES11,
 
 `r if(is.character(params$data21)){knitr::asis_output("4. PEORRES3(Fine Lines Wrinkles score) should be 1=Significant, 2=Average, abd 3=Minor")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PEORRES3,regex("1=Significant|2=Average|3=Minor",ignore_case = T)),]$Subject,"red")}`
 
-`r if(is.character(params$data21)){knitr::asis_output("5. PEORRES4(Hair Coverage score) should be either 1=Significant(shaving required) or 2=Non-significant")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PEORRES4,regex("1=Significant|2=Non-significant",ignore_case = T)),]$Subject,"red")}`
+`r if(is.character(params$data21)){knitr::asis_output("5. PEORRES4(Hair Coverage score) should be either 1=Significant(shaving required) or 2=Non-significant")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PEORRES4,regex("1=Significant\\(shaving required\\)|2=Non-significant",ignore_case = T)),]$Subject,"red")}`
 
-`r if(is.character(params$data21)){knitr::asis_output("6. PEORRES5(Dry Skin score) should be either 1=Significant(Flaky) or 2=Non-significant")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PEORRES5,regex("1=Significant|2=Non-significant",ignore_case = T)),]$Subject,"red")}`
+`r if(is.character(params$data21)){knitr::asis_output("6. PEORRES5(Dry Skin score) should be either 1=Significant(Flaky) or 2=Non-significant")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PEORRES5,regex("1=Significant\\(Flaky\\)|2=Non-significant",ignore_case = T)),]$Subject,"red")}`
 
 `r if(is.character(params$data21)){knitr::asis_output("7. PEORRES6(Scabbing score) should be either Yes or No")}` `r if(is.character(params$data21)){colorize(sk2[!str_detect(sk2$PEORRES6,regex("Yes|No",ignore_case = T)),]$Subject,"red")}`
 

@@ -13,48 +13,49 @@ ui <- fluidPage(
   fluidRow(column(width = 12,
                   textInput("study",h6("Please enter InHouse study",value = ""),width = "400px"),
                   verbatimTextOutput("text"),
+                  selectInput("label","Column Label",choices = c(TRUE,FALSE),selected = FALSE),
                   rclipboardSetup(),
                   uiOutput("clip"))),
                   br(),
   
   tabsetPanel(
             tabPanel(p("Adverse Event Report",style = "font-size:20px;"),
-              fileInput("ae1","Please Upload AE1",accept = ".sas7bdat"),
-              fileInput("ae2","Please Upload AE2",accept = ".sas7bdat")),
+              fileInput("ae1","Please Upload AE1",accept = ".sas7bdat",width = "400px"),
+              fileInput("ae2","Please Upload AE2",accept = ".sas7bdat",width = "400px")),
   
             tabPanel(p("Device Incident Report",style = "font-size:20px;"),
-              fileInput("de","Please Upload DE",accept = ".sas7bdat")),
+              fileInput("de","Please Upload DE",accept = ".sas7bdat",width = "400px")),
             
             tabPanel(p("Subject Characteristics",style = "font-size:20px;"),
-                     fileInput("dm","Please Upload DM",accept = ".sas7bdat"),
-                     fileInput("vs","Please Upload VS",accept = ".sas7bdat"),
-                     fileInput("ie","Please Upload IE",accept = ".sas7bdat"),
-                     fileInput("mh","Please Upload MH",accept = ".sas7bdat")),
+                     fileInput("dm","Please Upload DM",accept = ".sas7bdat",width = "400px"),
+                     fileInput("vs","Please Upload VS",accept = ".sas7bdat",width = "400px"),
+                     fileInput("ie","Please Upload IE",accept = ".sas7bdat",width = "400px"),
+                     fileInput("mh","Please Upload MH",accept = ".sas7bdat",width = "400px")),
             
             tabPanel(p("Sensor Use",style = "font-size:20px;"),
-                     fileInput("du1","Please Upload DU1",accept = ".sas7bdat"),
-                     fileInput("du2","Please Upload DU2",accept = ".sas7bdat"),
-                     fileInput("du3","Please Upload DU3",accept = ".sas7bdat"),
-                     fileInput("du4","Please Upload DU4",accept = ".sas7bdat"),
-                     fileInput("du5","Please Upload DU5",accept = ".sas7bdat")),
+                     fileInput("du1","Please Upload DU1",accept = ".sas7bdat",width = "400px"),
+                     fileInput("du2","Please Upload DU2",accept = ".sas7bdat",width = "400px"),
+                     fileInput("du3","Please Upload DU3",accept = ".sas7bdat",width = "400px"),
+                     fileInput("du4","Please Upload DU4",accept = ".sas7bdat",width = "400px"),
+                     fileInput("du5","Please Upload DU5",accept = ".sas7bdat",width = "400px")),
             
             tabPanel(p("Protocol Deviation Report",style = "font-size:20px;"),
-                     fileInput("pd","Please Upload PD",accept = ".sas7bdat")),
+                     fileInput("pd","Please Upload PD",accept = ".sas7bdat",width = "400px")),
             
             tabPanel(p("Skin Assessment",style = "font-size:20px;"),
-                     fileInput("sk1","Please Upload SK1",accept = ".sas7bdat"),
-                     fileInput("sk2","Please Upload SK2",accept = ".sas7bdat")),
+                     fileInput("sk1","Please Upload SK1",accept = ".sas7bdat",width = "400px"),
+                     fileInput("sk2","Please Upload SK2",accept = ".sas7bdat",width = "400px")),
             
             tabPanel(p("Adhesive Log",style = "font-size:20px;"),
-                     fileInput("dt2","Please Upload DT2",accept = ".sas7bdat"),
-                     fileInput("dt3","Please Upload DT3",accept = ".sas7bdat"),
-                     fileInput("dt4","Please Upload DT4",accept = ".sas7bdat")),
+                     fileInput("dt2","Please Upload DT2",accept = ".sas7bdat",width = "400px"),
+                     fileInput("dt3","Please Upload DT3",accept = ".sas7bdat",width = "400px"),
+                     fileInput("dt4","Please Upload DT4",accept = ".sas7bdat",width = "400px")),
             
             tabPanel(p("Daily Activity Log",style = "font-size:20px;"),
-                     fileInput("dl2","Please Upload DL2",accept = ".sas7bdat")),
+                     fileInput("dl2","Please Upload DL2",accept = ".sas7bdat",width = "400px")),
             
             tabPanel(p("Meal and Activity Log",style = "font-size:20px;"),
-                     fileInput("ml2","Please Upload ML2",accept = ".sas7bdat"))      
+                     fileInput("ml2","Please Upload ML2",accept = ".sas7bdat",width = "400px"))      
             
             ),
   
@@ -103,13 +104,13 @@ server <- function(input, output, session) {
   ## Download Report
   output$download <- downloadHandler(
     filename = function(){
-      str_c("InHouse 16157 ",input$study," EDC Review Report",".html")
+      str_c("InHouse 16157 ",input$study," EDC Review Report ",Sys.Date(),".html")
     }, #"InHouse 16157 EDC Review Report.html",
     content = function(file){
       params <- list(Study = input$study,
+                     label = input$label,
                      data1 = input$ae1$datapath,
                      data2 = input$ae2$datapath,
-                     
                      data4 = input$de$datapath,
                      data5 = input$dm$datapath,
                      data6 = input$du1$datapath,

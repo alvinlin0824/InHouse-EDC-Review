@@ -9,6 +9,7 @@ output:
 
 params:
     Study: IH089
+    label: FALSE
     data1:
       label: "Upload ae1 :"
       value: FALSE
@@ -93,6 +94,7 @@ params:
       label: "Upload sk2 :"
       value: FALSE
       input: file
+      
 ---
 <!-- delete all the variables that are there in the environment  rm(list=ls())  -->
 ```{r include=F}
@@ -220,7 +222,7 @@ str_detect(ae1$AEDUR01,regex("Ongoing",ignore_case = T)) & (!is.na(ae1$AEENDT01)
 (is.na(ae1$AEDTC03) | str_detect(ae1$AEDTC03,"^$|pattern"))    |
 # Length of Investigator Acknowledgement Date
 str_length(ae1$AEDTC03) != median(str_length(ae1$AEDTC03),na.rm = T),][,-c(1,3,5:13)] %>%
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "ae1",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -327,8 +329,8 @@ ae2[
     # Details
     str_detect(ae2$AEORES07,"^$|pattern")|
     # method of contact
-    !str_detect(str_to_lower(ae2$AERESP01),"in person|telephone|electronic"),][,-c(1,3,5:13)] %>% 
-    # sjlabelled::label_to_colnames() %>%
+    !str_detect(str_to_lower(ae2$AERESP01),"in person|telephone|electronic"),][,-c(1,3,5:13)] %>%
+    {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
     reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "ae2",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -347,13 +349,13 @@ ae2[
 
 `r if(is.character(params$data2)){knitr::asis_output("4. AERESP01(UPDATES/FOLLOW-UP: method of contact) should be In person, Telephone or Electronic")}` `r if(is.character(params$data2)){colorize(ae2[!str_detect(str_to_lower(ae2$AERESP01),"in person|telephone|electronic"),]$Subject,"red")}`
 
-```{r include=F,eval = F}
+```{r eval = F}
 # cm2 <- read_sas(gsub("\\\\", "/",r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\089\cm2.sas7bdat)"))
 # cm2 <- read_sas(params$data3)
 # cm2 <- cm2[order(cm2$Subject),]
 ```
 
-```{r echo = F, eval = F,include=F}
+```{r eval = F}
 # cm2[ae1[ae1$AEORES06 == "Yes",]$Subject == cm2$Subject,][,-c(1,3)] %>% 
 #   datatable(extensions = c('FixedColumns','Scroller'), options = list(deferRender = TRUE, scrollY = 250, scroller = TRUE,dom = 't',scrollX = TRUE,fixedColumns = list(leftColumns = 2))
 # )
@@ -431,7 +433,7 @@ str_detect(de$DEORES09,regex("Other",ignore_case = T)) & str_detect(de$DETXT04,"
 ((str_detect(de$DEORES05,"[:alpha:]") | str_detect(de$DEORES06,"[:alpha:]")) & (str_detect(de$DESPID02,"^$|pattern") | str_detect(de$DESPID08,"^$|pattern") | str_detect(de$DESPID14,"^$|pattern") | str_detect(de$DESPID15,"^$|pattern")))  |
 # Reader Replaced
 str_detect(de$DEORES07,"[:alpha:]") & (str_detect(de$DESPID01,"^$|pattern") | str_detect(de$DESPID07,"^$|pattern")),][,-c(1,3,5:13)] %>% 
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "de",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -528,7 +530,7 @@ str_detect(dm$RACE,regex("Other",ignore_case = T)) & str_detect(dm$RACE,"^$|patt
 # Dexterity  
 !str_detect(dm$DMDEXT,regex("Right|Left|Ambidextrous",ignore_case = T))
     ,][,-c(1,3,5:13)] %>% 
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "dm",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -610,7 +612,7 @@ puncture\\)|3 =Adhesive failure at insertion|4 = Partial insertion, sensor left 
 # if other, specify
 str_detect(du1$DUORES7,regex("other",ignore_case = T)) & str_detect(du1$DUDESC2,"^$|pattern")
 ,][,-c(1,3,5:13)] %>%
-  # sjlabelled::label_to_colnames() %>% 
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>% 
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "du1",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -681,7 +683,7 @@ str_detect(du2$DUORES9,"^$|pattern") |
 # Was the sensor startup process successful? if yes
 str_detect(du2$DUORES9,"Yes") & str_detect(du2$DUTM2,"^$|pattern")
       ,][,-c(1,3,5:13)] %>%
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "du2",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -752,7 +754,7 @@ is.na(du3$DUDTC3) | str_length(du3$DUDTC3) != median(str_length(du3$DUDTC3),na.r
 !str_detect(du3$DUORES16,"Clinical Staff|Fell/Knocked Off|Study Subject") |
 # Removal Comments if yes 
 str_detect(du3$DUORES17,regex("Yes",ignore_case = T)) & str_detect(du3$DUCOM,"^$|pattern"),][,-c(1,3,5:13)] %>%
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "du3",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -811,7 +813,7 @@ du4[
 is.na(du4$DUDTC4) | str_length(du4$DUDTC4) != median(str_length(du4$DUDTC4),na.rm = T) |
 # Did the subject experience any insertion site symptoms?
 !str_detect(du4$DUORES19,regex("Yes|No",ignore_case = T)),][,-c(1,3,5:13)] %>%
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "du4",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -853,8 +855,8 @@ du5[
 # Did the subject or study staff apply one or more over-bandages?
 !str_detect(du5$DUORES21,regex("Yes|No",ignore_case = T))  |
 # If yes, Date should not be blank or NA
-str_detect(du5$DUORES21,regex("Yes",ignore_case = T)) & is.na(du5$DUORES21),][,-c(1,3,5:13)] %>%   
-  # sjlabelled::label_to_colnames() %>%
+str_detect(du5$DUORES21,regex("Yes",ignore_case = T)) & is.na(du5$DUORES21),][,-c(1,3,5:13)] %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "du5",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -894,7 +896,7 @@ htmltools::browsable(
 ie[
 # Date Eligibility verified and Informed Consent signed
 is.na(ie$IEDTC) | str_length(ie$IEDTC) != median(str_length(ie$IEDTC),na.rm = T),][,-c(1,3,5:13)] %>% 
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "ie",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -936,7 +938,7 @@ mh[
 ! str_detect(mh$MHORRES2,regex("Yes|No",ignore_case = T)) |
 # If yes,Month Diagnosed with Diabetes,Year diagnosed with diabetes,Type of diabetes
 str_detect(mh$MHORRES2,regex("Yes",ignore_case = T)) & (!str_detect(mh$MHDTC1,regex("Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec",ignore_case = T)) | str_detect(mh$MHDTC2,"^$|pattern") | !str_detect(mh$MHORRES3,regex("Type 1|Type 2",ignore_case = T))),][,-c(1,3,5:13)] %>% 
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "mh",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -1003,7 +1005,7 @@ str_detect(pd$DVACT4,regex("Yes",ignore_case = T)) & str_detect(pd$DVCOM2,"^$|pa
 (str_detect(pd$DVDESC4,"^$|pattern")  & str_detect(pd$DVDESC5,"^$|pattern") & str_detect(pd$DVDESC6,"^$|pattern"))                                              |
 # Principal Investigator Acknowledgement: Date
 str_length(pd$DVDTC3) != median(str_length(pd$DVDTC3),na.rm = T) | is.na(pd$DVDTC3),][,-c(1,3,5:13)] %>%
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "pd",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -1076,7 +1078,7 @@ vs[
 # Weight (lbs) extreme values
 # ((vs$VSORRES3 < quantile(vs$VSORRES3,probs = 0.25,names = F,na.rm = T) -1.5*IQR(vs$VSORRES3,na.rm = T) | vs$VSORRES3 > quantile(vs$VSORRES3,probs = 0.75,names = F,na.rm = T) + 1.5*IQR(vs$VSORRES3,na.rm = T)) & str_length(vs$VSORRES3) != 3)
 ,][,-c(1,3,5:13)] %>%
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "vs",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -1130,7 +1132,7 @@ str_length(dt2$DTALSTM) != median(str_length(dt2$DTALSTM),na.rm = T) | !str_dete
 str_length(dt2$DTALEDTC) != median(str_length(dt2$DTALEDTC),na.rm = T) |
 # Time Removed
 str_length(dt2$DTALETM) != median(str_length(dt2$DTALETM),na.rm = T) | !str_detect(dt2$DTALETM,":"),][,-c(1,3,5:13)] %>%
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "dt2",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -1183,7 +1185,7 @@ str_length(dt3$DTALDTC1) != median(str_length(dt3$DTALDTC1),na.rm = T) |
 # Did the subject experience any insertion site symptoms?
 !str_detect(dt3$DTORRES1,regex("Yes|No",ignore_case = T))
 ,][,-c(1,3,5:13)] %>%
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "dt3",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -1224,7 +1226,7 @@ str_length(dt4$DTALDTC3) != median(str_length(dt4$DTALDTC3),na.rm = T) |
 # Did the subject experience any insertion site symptoms?
 !str_detect(dt4$DTORRES3,regex("Yes|No",ignore_case = T))
 ,][,-c(1,3,5:13)] %>%
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "dt4",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -1275,7 +1277,7 @@ str_detect(dl2$DRDLACT,regex("Other",ignore_case = T)) & str_detect(dl2$DRDLACTO
 # Description
 !str_detect(dl2$DRDLDESC,regex("Unnoticed|Discomfort|Device loosened or began to come off|Device came off",ignore_case = T))
 ,][,-c(1,3,5:13)] %>%
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "dl2",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -1332,7 +1334,7 @@ str_length(ml2$MLTM) != median(str_length(ml2$MLTM),na.rm = T) | !str_detect(ml2
 # Activity is Other
 str_detect(ml2$MLORES11,regex("Other",ignore_case = T)) & str_detect(ml2$MLOTH,"^$|pattern") 
 ,][,-c(1,3,5:13)] %>%
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "ml2",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -1377,7 +1379,7 @@ htmltools::browsable(
 sk1[
 # Date
 str_length(sk1$PEDTC) != median(str_length(sk1$PEDTC),na.rm = T),][,-c(1,3,5:13)] %>%
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "sk1",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
@@ -1436,7 +1438,7 @@ str_detect(sk2$PEORRES8,regex("Yes",ignore_case = T)) & str_detect(sk2$PEORRES9,
 # If Hypo/Hyperpigmentation score is Yes
 str_detect(sk2$PEORES10,regex("Yes",ignore_case = T)) & str_detect(sk2$PEORES11,"^$|pattern")
   ,][,-c(1,3,5:13)] %>%
-  # sjlabelled::label_to_colnames() %>%
+  {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "sk1",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))

@@ -569,7 +569,7 @@ str_detect(dm$RACE,regex("Other",ignore_case = T)) & str_detect(dm$RACE,"^$|patt
 <!-- [Sensor Use](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_Sensor_Use_RevA.pdf) -->
 
 ```{r Load du1, eval = is.character(params$data6)}
-# du1 <- read_sas(gsub("\\\\", "/",r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\114\du1.sas7bdat)"))
+# du1 <- read_sas(gsub("\\\\", "/",r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\115\du1.sas7bdat)"))
 du1 <- read_sas(params$data6)
 du1 <- du1 %>%
        filter(!str_detect(DUYN1,regex("CHECK HERE IF NO DATA RECORDED|no_data_recorded",ignore_case = T))) %>%
@@ -584,28 +584,33 @@ htmltools::browsable(
       tagList(fontawesome::fa("download"), "Download as CSV"),
       onclick = "Reactable.downloadDataCSV('du1', 'du1.csv')"
     ),
-# Sensor Serial Number (string)
-du1[str_length(du1$DUNUM2) != median(str_length(du1$DUNUM2),na.rm = T) |
+du1[
 # Insertion Date (string)
 str_length(du1$DUDTC1) != median(str_length(du1$DUDTC1),na.rm = T) | 
 # Insertion Time (24 hr) (string)
 str_length(du1$DUTM1) != median(str_length(du1$DUTM1),na.rm = T) |
 # Did it puncture the skin? (string)
-is.na(du1$DUORES2) | str_detect(du1$DUORES2,"^$|pattern") | 
+!str_detect(du1$DUORES2,regex("Yes|No",ignore_case = T)) | 
+# Sensor Number
+str_detect(du1$DUNUM1,"^$|pattern") | 
 # Condition Code (string)    
 str_length(du1$DUCD) != median(str_length(du1$DUCD),na.rm = T) |
+# Sensor Serial Number (string)
+str_length(du1$DUNUM2) != median(str_length(du1$DUNUM2),na.rm = T) |
 # PDU/SDU Lot Number(s) and PDU/SDU Lot Number(s) NA (string)
 str_detect(du1$DUNUM3,"^$|pattern") & str_detect(du1$DUORES3,"^$|pattern")|
 # Length of Insertion Location (string) 
 !str_detect(du1$DULOC,regex("RA|LA|RUQ|RLQ|LUQ|LLQ|RPH|LPH|RT|LT|RC|LC|OTH",ignore_case = T)) |
 # Relative Position (string)
 !str_detect(du1$DUPOS,regex("1=Medial/Anterior|2=Distal/Posterior|3=Superior|4=Inferior|NA",ignore_case = T)) |
+# Bleeding
+is.na(du1$DUNUM4) |
 # Did the subject experience any pain? (string)
-str_detect(du1$DUORES24,"^$|pattern") |
+!str_detect(du1$DUORES24,regex("Yes|No",ignore_case = T)) |
 # If yes, how severe? If yes, describe (string)
 str_detect(du1$DUORES24,"Yes") & (!str_detect(du1$DUORES4,regex("1=Slight Pain|2=Mild Pain|3=Moderate Pain|4=Extreme Pain")) | !str_detect(du1$DUORES5,regex("1=Sharp|2=Dull|3=Burning|4=Sharp & Burning|5=Sharp & Pricking|6=Dull & Burning|7=Dull & Pricking|8=Pinch|9=Stinging|99=Other \\(please specify on CRF\\)",ignore_case = T))) |                                  
 # Were inserter assembly and insertion processes successful? (string)
-str_detect(du1$DUORES6,"^$|pattern") |
+!str_detect(du1$DUORES6,regex("Yes|No",ignore_case = T)) |
 # If no, select issues
 str_detect(du1$DUORES6,"No") & (!str_detect(du1$DUORES7,regex("1=Inserter assembly error \\(never placed on subject\\)|2 = Inserter did not discharge \\(no skin 
 puncture\\)|3 =Adhesive failure at insertion|4 = Partial insertion, sensor left on|5 = Partial insertion, sensor removed|99 = Other \\(Please specify on CRF\\)"))) |
@@ -623,32 +628,36 @@ str_detect(du1$DUORES7,regex("other",ignore_case = T)) & str_detect(du1$DUDESC2,
 
 `r if(is.character(params$data6) && is_empty(du1$Subject)){knitr::asis_output(colorize("DU1 is empty","red"))}`
 
-`r if(is.character(params$data6)){knitr::asis_output("1. Length of DUNUM2(sensor serial number) default is")}` `r if(is.character(params$data6)){median(str_length(du1$DUNUM2),na.rm = T)}` `r if(is.character(params$data6)){colorize(du1[str_length(du1$DUNUM2) != median(str_length(du1$DUNUM2),na.rm = T),]$Subject,"red")}`
-
-`r if(is.character(params$data6)){knitr::asis_output("2. Length of DUDTC1(Insertion Date) default is")}` `r if(is.character(params$data6)){median(str_length(du1$DUDTC1),na.rm = T)}`
+`r if(is.character(params$data6)){knitr::asis_output("1. Length of DUDTC1(Insertion Date) default is")}` `r if(is.character(params$data6)){median(str_length(du1$DUDTC1),na.rm = T)}`
 `r if(is.character(params$data6)){colorize(du1[is.na(du1$DUDTC1) | str_length(du1$DUDTC1) != median(str_length(du1$DUDTC1),na.rm = T),]$Subject,"red")}`
 
-`r if(is.character(params$data6)){knitr::asis_output("3. Length of DUTM1(Insertion Time (24 hr)) default is")}` `r if(is.character(params$data6)){median(str_length(du1$DUTM1),na.rm = T)}` `r if(is.character(params$data6)){colorize(du1[str_length(du1$DUTM1) != median(str_length(du1$DUTM1),na.rm = T),]$Subject,"red")}`
+`r if(is.character(params$data6)){knitr::asis_output("2. Length of DUTM1(Insertion Time (24 hr)) default is")}` `r if(is.character(params$data6)){median(str_length(du1$DUTM1),na.rm = T)}` `r if(is.character(params$data6)){colorize(du1[str_length(du1$DUTM1) != median(str_length(du1$DUTM1),na.rm = T),]$Subject,"red")}`
 
-`r if(is.character(params$data6)){knitr::asis_output("4. DUORES2(Did it puncture the skin?) should not be blank")}` `r if(is.character(params$data6)){colorize(du1[is.na(du1$DUORES2) | str_detect(du1$DUORES2,"^$|pattern"),]$Subject,"red")}`
+`r if(is.character(params$data6)){knitr::asis_output("3. DUORES2(Did it puncture the skin?) should be either Yes or No")}` `r if(is.character(params$data6)){colorize(du1[!str_detect(du1$DUORES2,regex("Yes|No",ignore_case = T)),]$Subject,"red")}`
 
-`r if(is.character(params$data6)){knitr::asis_output("5. Length of condition code default is")}` `r if(is.character(params$data6)){median(str_length(du1$DUCD),na.rm = T)}` `r if(is.character(params$data6)){colorize(du1[str_length(du1$DUCD) != median(str_length(du1$DUCD),na.rm = T),]$Subject,"red")}`
+`r if(is.character(params$data6)){knitr::asis_output("4. DUNUM1(Sensor Number) should not be blank")}` `r if(is.character(params$data6)){colorize(du1[str_detect(du1$DUNUM1,"^$|pattern"),]$Subject,"red")}`
 
-`r if(is.character(params$data6)){knitr::asis_output("6. DUNUM3(PDU/SDU Lot Number(s)) and DUORES3(PDU/SDU Lot Number(s) NA) should not be blank at the same time")}` `r if(is.character(params$data6)){colorize(du1[str_detect(du1$DUNUM3,"^$|pattern") & str_detect(du1$DUORES3,"^$|pattern"),]$Subject,"red")}`
+`r if(is.character(params$data6)){knitr::asis_output("5. Length of DUCD(Condition Code) default is")}` `r if(is.character(params$data6)){median(str_length(du1$DUCD),na.rm = T)}` `r if(is.character(params$data6)){colorize(du1[str_length(du1$DUCD) != median(str_length(du1$DUCD),na.rm = T),]$Subject,"red")}`
 
-`r if(is.character(params$data6)){knitr::asis_output("7. DULOC(Insertion Location) should be RA, LA, RUQ, RLQ, LUQ, LLQ, RPH, LPH, RT, LT, RC, LC, or OTH")}` `r if(is.character(params$data6)){colorize(du1[!str_detect(du1$DULOC,regex("RA|LA|RUQ|RLQ|LUQ|LLQ|RPH|LPH|RT|LT|RC|LC|OTH",ignore_case = T)),]$Subject,"red")}`
+`r if(is.character(params$data6)){knitr::asis_output("6. Length of DUNUM2(Sensor Serial Number) default is")}` `r if(is.character(params$data6)){median(str_length(du1$DUNUM2),na.rm = T)}` `r if(is.character(params$data6)){colorize(du1[str_length(du1$DUNUM2) != median(str_length(du1$DUNUM2),na.rm = T),]$Subject,"red")}`
 
-`r if(is.character(params$data6)){knitr::asis_output("8. DUPOS (Relative Position) should be 1=Medial/Anterior, 2=Distal/Posterior, 3=Superior, 4=Inferior, or NA")}` `r if(is.character(params$data6)){colorize(du1[!str_detect(du1$DUPOS,regex("1=Medial/Anterior|2=Distal/Posterior|3=Superior|4=Inferior|NA",ignore_case = T)),]$Subject,"red")}`
+`r if(is.character(params$data6)){knitr::asis_output("7. DUNUM3(PDU/SDU Lot Number(s)) and DUORES3(PDU/SDU Lot Number(s) NA) should not be blank at the same time")}` `r if(is.character(params$data6)){colorize(du1[str_detect(du1$DUNUM3,"^$|pattern") & str_detect(du1$DUORES3,"^$|pattern"),]$Subject,"red")}`
 
-`r if(is.character(params$data6)){knitr::asis_output("9. DUORES24(Did the subject experience any pain?) should not be blank")}` `r if(is.character(params$data6)){colorize(du1[str_detect(du1$DUORES24,"^$|pattern"),]$Subject,"red")}`
+`r if(is.character(params$data6)){knitr::asis_output("8. DULOC(Insertion Location) should be RA, LA, RUQ, RLQ, LUQ, LLQ, RPH, LPH, RT, LT, RC, LC, or OTH")}` `r if(is.character(params$data6)){colorize(du1[!str_detect(du1$DULOC,regex("RA|LA|RUQ|RLQ|LUQ|LLQ|RPH|LPH|RT|LT|RC|LC|OTH",ignore_case = T)),]$Subject,"red")}`
 
-`r if(is.character(params$data6)){knitr::asis_output("10. DUORES24(Did the subject experience any pain?) if Yes, DUORES4(If yes, how severe?) should be 1=Slight Pain, 2=Mild Pain, 3=Moderate Pain, or 4=Extreme Painand and DUORES5(If yes, describe) should be 1=Sharp, 2=Dull, 3=Burning, 4=Sharp & Burning, 5=Sharp & Pricking, 6=Dull & Burning, 7=Dull & Pricking, 8=Pinch, 9=Stinging, or 99=Other (please specify on CRF)")}` `r if(is.character(params$data6)){colorize(du1[str_detect(du1$DUORES24,"Yes") & (!str_detect(du1$DUORES4,regex("1=Slight Pain|2=Mild Pain|3=Moderate Pain|4=Extreme Pain")) | !str_detect(du1$DUORES5,regex("1=Sharp|2=Dull|3=Burning|4=Sharp & Burning|5=Sharp & Pricking|6=Dull & Burning|7=Dull & Pricking|8=Pinch|9=Stinging|99=Other \\(please specify on CRF\\)",ignore_case = T))),]$Subject,"red")}`
+`r if(is.character(params$data6)){knitr::asis_output("9. DUPOS (Relative Position) should be 1=Medial/Anterior, 2=Distal/Posterior, 3=Superior, 4=Inferior, or NA")}` `r if(is.character(params$data6)){colorize(du1[!str_detect(du1$DUPOS,regex("1=Medial/Anterior|2=Distal/Posterior|3=Superior|4=Inferior|NA",ignore_case = T)),]$Subject,"red")}`
 
-`r if(is.character(params$data6)){knitr::asis_output("11. DUORES6(Were inserter assembly and insertion processes successful?) shoud not be blank")}` `r if(is.character(params$data6)){colorize(du1[str_detect(du1$DUORES6,"^$|pattern"),]$Subject,"red")}`
+`r if(is.character(params$data6)){knitr::asis_output("10. DUNUM4 (Bleeding (microliter)) should not be blank")}` `r if(is.character(params$data6)){colorize(du1[is.na(du1$DUNUM4),]$Subject,"red")}`
 
-`r if(is.character(params$data6)){knitr::asis_output("12. DUORES6(Were inserter assembly and insertion processes successful?) if No, DUORES7(If no, select issue) should be 1=Inserter assembly error (never placed on subject), 2 = Inserter did not discharge (no skin puncture), 3 =Adhesive failure at insertion, 4 = Partial insertion, sensor left on, 5 = Partial insertion, sensor removed, or 99 = Other (Please specify on CRF) and DUDESC2(If other,  specify) should not be blank at the same time")}` `r if(is.character(params$data6)){colorize(du1[str_detect(du1$DUORES6,"No") & (!str_detect(du1$DUORES7,regex("1=Inserter assembly error \\(never placed on subject\\)|2 = Inserter did not discharge \\(no skin puncture\\)|3 =Adhesive failure at insertion|4 = Partial insertion, sensor left on|5 = Partial insertion, sensor removed|99 = Other \\(Please specify on CRF\\)"))),]$Subject,"red")}`
+`r if(is.character(params$data6)){knitr::asis_output("11. DUORES24(Did the subject experience any pain?) should not be blank")}` `r if(is.character(params$data6)){colorize(du1[!str_detect(du1$DUORES24,regex("Yes|No",ignore_case = T)),]$Subject,"red")}`
 
-`r if(is.character(params$data6)){knitr::asis_output("13. If DUORES7(if no, select issue) is Other, DUDESC2(If other, specify) should not be blank")}` `r if(is.character(params$data6)){colorize(du1[str_detect(du1$DUORES7,regex("other",ignore_case = T)) & str_detect(du1$DUDESC2,"^$|pattern"),]$Subject,"red")}`
+`r if(is.character(params$data6)){knitr::asis_output("12. DUORES24(Did the subject experience any pain?) if Yes, DUORES4(If yes, how severe?) should be 1=Slight Pain, 2=Mild Pain, 3=Moderate Pain, or 4=Extreme Painand and DUORES5(If yes, describe) should be 1=Sharp, 2=Dull, 3=Burning, 4=Sharp & Burning, 5=Sharp & Pricking, 6=Dull & Burning, 7=Dull & Pricking, 8=Pinch, 9=Stinging, or 99=Other (please specify on CRF)")}` `r if(is.character(params$data6)){colorize(du1[str_detect(du1$DUORES24,"Yes") & (!str_detect(du1$DUORES4,regex("1=Slight Pain|2=Mild Pain|3=Moderate Pain|4=Extreme Pain")) | !str_detect(du1$DUORES5,regex("1=Sharp|2=Dull|3=Burning|4=Sharp & Burning|5=Sharp & Pricking|6=Dull & Burning|7=Dull & Pricking|8=Pinch|9=Stinging|99=Other \\(please specify on CRF\\)",ignore_case = T))),]$Subject,"red")}`
+
+`r if(is.character(params$data6)){knitr::asis_output("13. DUORES6(Were inserter assembly and insertion processes successful?) shoud be either Yes or No")}` `r if(is.character(params$data6)){colorize(du1[!str_detect(du1$DUORES6,regex("Yes|No",ignore_case = T)),]$Subject,"red")}`
+
+`r if(is.character(params$data6)){knitr::asis_output("14. DUORES6(Were inserter assembly and insertion processes successful?) if No, DUORES7(If no, select issue) should be 1=Inserter assembly error (never placed on subject), 2 = Inserter did not discharge (no skin puncture), 3 =Adhesive failure at insertion, 4 = Partial insertion, sensor left on, 5 = Partial insertion, sensor removed, or 99 = Other (Please specify on CRF) and DUDESC2(If other,  specify) should not be blank at the same time")}` `r if(is.character(params$data6)){colorize(du1[str_detect(du1$DUORES6,"No") & (!str_detect(du1$DUORES7,regex("1=Inserter assembly error \\(never placed on subject\\)|2 = Inserter did not discharge \\(no skin puncture\\)|3 =Adhesive failure at insertion|4 = Partial insertion, sensor left on|5 = Partial insertion, sensor removed|99 = Other \\(Please specify on CRF\\)"))),]$Subject,"red")}`
+
+`r if(is.character(params$data6)){knitr::asis_output("15. If DUORES7(if no, select issue) is Other, DUDESC2(If other, specify) should not be blank")}` `r if(is.character(params$data6)){colorize(du1[str_detect(du1$DUORES7,regex("other",ignore_case = T)) & str_detect(du1$DUDESC2,"^$|pattern"),]$Subject,"red")}`
 
 <!-- # DU2 Review -->
 `r if(is.character(params$data7)){knitr::asis_output("# **DU2 Review**")}`
@@ -658,7 +667,7 @@ str_detect(du1$DUORES7,regex("other",ignore_case = T)) & str_detect(du1$DUDESC2,
 <!-- [Sensor Use](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_Sensor_Use_RevA.pdf) -->
 
 ```{r Load du2, eval = is.character(params$data7)}
-# du2 <- read_sas(gsub("\\\\", "/",r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\111\du2.sas7bdat)"))
+# du2 <- read_sas(gsub("\\\\", "/",r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\115\du2.sas7bdat)"))
 du2 <- read_sas(params$data7)
 du2 <- du2 %>%
        filter(!str_detect(DUORES8,regex("NA",ignore_case = T))) %>%
@@ -674,14 +683,19 @@ htmltools::browsable(
       tagList(fontawesome::fa("download"), "Download as CSV"),
       onclick = "Reactable.downloadDataCSV('du2', 'du2.csv')"
     ),
-# Reader/Phone Serial Number
-du2[str_length(du2$DUNUM6) != median(str_length(du2$DUNUM6),na.rm = T) |
+du2[
 #  Connection
 str_detect(du2$DUORES8,"^$|pattern") |
 # Was the sensor startup process successful?
-str_detect(du2$DUORES9,"^$|pattern") |
-# Was the sensor startup process successful? if yes
-str_detect(du2$DUORES9,"Yes") & str_detect(du2$DUTM2,"^$|pattern")
+!str_detect(du2$DUORES9,regex("Yes|No",ignore_case = T)) |
+# Was the sensor startup process successful? if yes, Date
+str_detect(du2$DUORES9,"Yes") & str_detect(du2$DUYN2,"^$|pattern") & is.na(du2$DUDTC2) |
+# Was the sensor startup process successful? if yes Time
+str_detect(du2$DUORES9,"Yes") & str_detect(du2$DUTM2,"^$|pattern") |
+# Number of connection attempts
+is.na(du2$DUNUM5) |
+# Reader/Phone Serial Number
+str_length(du2$DUNUM6) != median(str_length(du2$DUNUM6),na.rm = T) 
       ,][,-c(1,3,5:13)] %>%
   {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "du2",height = 600,
@@ -696,11 +710,15 @@ str_detect(du2$DUORES9,"Yes") & str_detect(du2$DUTM2,"^$|pattern")
 
 `r if(is.character(params$data7)){knitr::asis_output("1. DUORES8(Connection) should not be blank")}` `r if(is.character(params$data7)){colorize(du2[str_detect(du2$DUORES8,"^$|pattern"),]$Subject,"red")}`
 
-`r if(is.character(params$data7)){knitr::asis_output("2. DUORES9(Was the sensor startup process successful?) should not be blank")}` `r if(is.character(params$data7)){colorize(du2[str_detect(du2$DUORES9,"^$|pattern"),]$Subject,"red")}`
+`r if(is.character(params$data7)){knitr::asis_output("2. DUORES9(Was the sensor startup process successful?) should be either Yes or No")}` `r if(is.character(params$data7)){colorize(du2[!str_detect(du2$DUORES9,regex("Yes|No",ignore_case = T)),]$Subject,"red")}`
 
-`r if(is.character(params$data7)){knitr::asis_output("3. If DUORES9(Was the sensor startup process successful?) is Yes,DUTM2(time displayed on reader) should not be blank")}` `r if(is.character(params$data7)){colorize(du2[str_detect(du2$DUORES9,"Yes") & str_detect(du2$DUTM2,"^$|pattern"),]$Subject,"red")}`
+`r if(is.character(params$data7)){knitr::asis_output("3. If DUORES9(Was the sensor startup process successful?) is Yes,DUYN2(Same as insertion date) and DUDTC2(If yes, date and time displayed on reader) should not be blank at the same time")}` `r if(is.character(params$data7)){colorize(du2[str_detect(du2$DUORES9,"Yes") & str_detect(du2$DUYN2,"^$|pattern") & is.na(du2$DUDTC2),]$Subject,"red")}`
 
-`r if(is.character(params$data7)){knitr::asis_output("4. Length of DUNUM6(Reader/Phone Serial Number) default is")}` `r if(is.character(params$data7)){median(str_length(du2$DUNUM6))}` `r if(is.character(params$data7)){colorize(du2[str_length(du2$DUNUM6) != median(str_length(du2$DUNUM6)),]$Subject,"red")}`
+`r if(is.character(params$data7)){knitr::asis_output("4. If DUORES9(Was the sensor startup process successful?) is Yes, DUTM2(time displayed on reader) should not be blank")}` `r if(is.character(params$data7)){colorize(du2[str_detect(du2$DUORES9,"Yes") & str_detect(du2$DUTM2,"^$|pattern"),]$Subject,"red")}`
+
+`r if(is.character(params$data7)){knitr::asis_output("5. DUNUM5(# of connection attempts) should not be blank")}` `r if(is.character(params$data7)){colorize(du2[is.na(du2$DUNUM5),]$Subject,"red")}`
+
+`r if(is.character(params$data7)){knitr::asis_output("6. Length of DUNUM6(Reader/Phone Serial Number) default is")}` `r if(is.character(params$data7)){median(str_length(du2$DUNUM6))}` `r if(is.character(params$data7)){colorize(du2[str_length(du2$DUNUM6) != median(str_length(du2$DUNUM6)),]$Subject,"red")}`
 
 <!-- # DU3 Review -->
 `r if(is.character(params$data8)){knitr::asis_output("# **DU3 Review**")}`
@@ -779,7 +797,7 @@ str_detect(du3$DUORES17,regex("Yes",ignore_case = T)) & str_detect(du3$DUCOM,"^$
 
 `r if(is.character(params$data8)){knitr::asis_output("7. DUTC3(Sensor Removal Date) range is")}` `r if(is.character(params$data8)){range(du3$DUDTC3,na.rm=T)}`
 
-`r if(is.character(params$data8)){knitr::asis_output("8. The length of time DUORES15(Sensor Removal Time (24hr)) should be")}` `r if(is.character(params$data8)){median(str_length(du3$DUORES15),na.rm = T)}` `r if(is.character(params$data8)){colorize(du3[!(str_length(du3$DUORES15) == median(str_length(du3$DUORES15),na.rm = T) | str_detect(du3$DUTM3,"UNK")) ,]$Subject,"red")}` `r if(is.character(params$data8)){knitr::asis_output("However, if DUORES15(Sensor Removal Time (24hr)) is blank, DUTM3(Sensor Removal Time UNK) should be UNK,so")}` `r if(is.character(params$data8)){colorize(du3[!str_detect(du3$DUTM3,"UNK") & str_detect(du3$DUORES15,"^$|pattern"),]$Subject,"red")}`
+`r if(is.character(params$data8)){knitr::asis_output("8. The length of time DUORES15(Sensor Removal Time (24hr)) should be")}` `r if(is.character(params$data8)){median(str_length(du3$DUORES15),na.rm = T)}` `r if(is.character(params$data8)){colorize(du3[!(str_length(du3$DUORES15) == median(str_length(du3$DUORES15),na.rm = T) | str_detect(du3$DUTM3,"UNK")) ,]$Subject,"red")}` `r if(is.character(params$data8)){knitr::asis_output("However, if DUORES15(Sensor Removal Time (24hr)) is blank, DUTM3(Sensor Removal Time UNK) should be UNK, so")}` `r if(is.character(params$data8)){colorize(du3[!str_detect(du3$DUTM3,"UNK") & str_detect(du3$DUORES15,"^$|pattern"),]$Subject,"red")}`
 
 `r if(is.character(params$data8)){knitr::asis_output("9. DUORES16(Removed By) should be Study Subject, Clinical Staff, and Fell/Knocked Off")}` `r if(is.character(params$data8)){colorize(du3[!str_detect(du3$DUORES16,"Clinical Staff|Fell/Knocked Off|Study Subject"),]$Subject,"red")}`
 
@@ -869,7 +887,7 @@ str_detect(du5$DUORES21,regex("Yes",ignore_case = T)) & is.na(du5$DUORES21),][,-
 
 `r if(is.character(params$data12)){knitr::asis_output("1. DUORES21(Did the subject or study staff apply one or more over-bandages?) should be either Yes or No")}` `r if(is.character(params$data12)){colorize(du5[!str_detect(du5$DUORES21,regex("Yes|No",ignore_case = T)),]$Subject,"red")}`
 
-`r if(is.character(params$data12)){knitr::asis_output("2. If DUORES21 yes,DUDTC5(If yes, date first applied:) should not be NA")}` `r if(is.character(params$data12)){colorize(du5[str_detect(du5$DUORES21,regex("Yes",ignore_case = T)) & is.na(du5$DUORES21),]$Subject,"red")}`
+`r if(is.character(params$data12)){knitr::asis_output("2. If DUORES21 is yes, DUDTC5(If yes, date first applied:) should not be NA")}` `r if(is.character(params$data12)){colorize(du5[str_detect(du5$DUORES21,regex("Yes",ignore_case = T)) & is.na(du5$DUORES21),]$Subject,"red")}`
 
 <!-- # IE Review -->
 `r if(is.character(params$data13)){knitr::asis_output("# **IE Review**")}`
@@ -953,7 +971,7 @@ str_detect(mh$MHORRES2,regex("Yes",ignore_case = T)) & (!str_detect(mh$MHDTC1,re
 
 `r if(is.character(params$data14)){knitr::asis_output("2. MHORRES2(Is the subject diabetic?) should be either Yes or No")}` `r if(is.character(params$data14)){colorize(mh[! str_detect(mh$MHORRES2,regex("Yes|No",ignore_case = T)),]$Subject,"red")}`
 
-`r if(is.character(params$data14)){knitr::asis_output("3. If MHORRES2(Is the subject diabetic?) is yes,MHDTC1(Month Diagnosed with Diabetes),MHDTC2(Year diagnosed with diabetes),and MHORRES3(Type of diabetes) should not be blank at the same time")}` `r if(is.character(params$data14)){colorize(mh[str_detect(mh$MHORRES2,regex("Yes",ignore_case = T)) & (!str_detect(mh$MHDTC1,regex("Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec",ignore_case = T)) | str_detect(mh$MHDTC2,"^$|pattern") | !str_detect(mh$MHORRES3,regex("Type 1|Type 2",ignore_case = T))),]$Subject,"red")}`
+`r if(is.character(params$data14)){knitr::asis_output("3. If MHORRES2(Is the subject diabetic?) is yes, MHDTC1(Month Diagnosed with Diabetes), MHDTC2(Year diagnosed with diabetes), and MHORRES3(Type of diabetes) should not be blank at the same time")}` `r if(is.character(params$data14)){colorize(mh[str_detect(mh$MHORRES2,regex("Yes",ignore_case = T)) & (!str_detect(mh$MHDTC1,regex("Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec",ignore_case = T)) | str_detect(mh$MHDTC2,"^$|pattern") | !str_detect(mh$MHORRES3,regex("Type 1|Type 2",ignore_case = T))),]$Subject,"red")}`
 
 <!-- # PD Review -->
 `r if(is.character(params$data9)){knitr::asis_output("# **PD Review**")}`
@@ -1398,7 +1416,7 @@ str_length(sk1$PEDTC) != median(str_length(sk1$PEDTC),na.rm = T),][,-c(1,3,5:13)
 `r if(is.character(params$data21)){htmltools::a("Skin Assessment",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_SkinAssess_RevA.pdf")}`
 
 ```{r Load sk2, eval = is.character(params$data21)}
-# sk2 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\106\sk2.sas7bdat)"))
+# sk2 <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\115\sk2.sas7bdat)"))
 sk2 <- read_sas(params$data21)
 sk2 <- sk2 %>%
        mutate(Subject = as.character(Subject)) %>%
@@ -1410,7 +1428,7 @@ htmltools::browsable(
    tagList(
     tags$button(
       tagList(fontawesome::fa("download"), "Download as CSV"),
-      onclick = "Reactable.downloadDataCSV('sk1', 'sk1.csv')"
+      onclick = "Reactable.downloadDataCSV('sk2', 'sk2.csv')"
     ),
 sk2[
 # Assessment Site
@@ -1439,7 +1457,7 @@ str_detect(sk2$PEORRES8,regex("Yes",ignore_case = T)) & str_detect(sk2$PEORRES9,
 str_detect(sk2$PEORES10,regex("Yes",ignore_case = T)) & str_detect(sk2$PEORES11,"^$|pattern")
   ,][,-c(1,3,5:13)] %>%
   {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
-  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "sk1",height = 600,
+  reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE, defaultPageSize = 6, resizable = TRUE,elementId = "sk2",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
      columns = list(Subject = colDef(sticky = "left"))
      )

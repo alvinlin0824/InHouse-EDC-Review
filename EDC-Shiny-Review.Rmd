@@ -114,7 +114,6 @@ knitr::opts_chunk$set(echo = FALSE,
 
 ```{r Libaray Packages, message=FALSE, include=F}
 library(tidyverse)
-library(purrr)
 library(lubridate)
 library(haven)
 library(htmltools)
@@ -142,7 +141,7 @@ colorize <- function(x, color) {
 `r if(is.character(params$data1)){htmltools::a("Adverse Event Report",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_AE_RevA.pdf")}`
 
 ```{r Load ae1, eval = is.character(params$data1)}
-# ae1 <- read_sas(gsub("\\\\", "/",r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\088\ae1.sas7bdat)"))
+# ae1 <- read_sas(gsub("\\\\", "/",r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\119\ae1.sas7bdat)"))
 ae1 <- read_sas(params$data1)
 ae1 <- ae1 %>%
        filter(!str_detect(AEYN01,regex("CHECK HERE IF NO DATA RECORDED|no_data_recorded",ignore_case = T))) %>%
@@ -165,7 +164,7 @@ is.na(ae1$AENUM01) |
 # Site awareness date
 (is.na(ae1$AEDTC01) | str_detect(ae1$AEDTC01,"^$|pattern")) |
 # Length of Site awareness date
-str_length(ae1$AEDTC01) != median(str_length(ae1$AEDTC01),na.rm = T) |
+str_length(ae1$AEDTC01) != median(str_length(ae1$AEDTC01),na.rm = T) | is.na(ae1$AEDTC01) |
 # Is this adverse event an application site adverse event?
 !str_detect(ae1$AEORES01,regex("Yes|No",ignore_case = T)) |
 # If AEORES01 is No Description of Event
@@ -187,7 +186,7 @@ str_detect(str_to_lower(ae1$AEDESC01),"erythema|edema") &
 # Onset date
 (is.na(ae1$AESTDT01) | str_detect(ae1$AESTDT01,"^$|pattern"))   |
 # Length of Onset Date
-str_length(ae1$AESTDT01) != median(str_length(ae1$AESTDT01),na.rm = T) |
+str_length(ae1$AESTDT01) != median(str_length(ae1$AESTDT01),na.rm = T) | is.na(ae1$AESTDT01) |
 # onset date and time
 str_detect(ae1$AESTTM02,"^$|pattern") & str_detect(ae1$AESTTM01,"^$|pattern") |
 # Severity
@@ -215,13 +214,13 @@ str_detect(ae1$AEDUR01,regex("Ongoing",ignore_case = T)) & (!is.na(ae1$AEENDT01)
 # Outcome Date
 (str_detect(ae1$AEDUR01,regex("Resolved or resolved with sequelae|Death",ignore_case = T)) & (is.na(ae1$AEENDT01) | str_detect(ae1$AEENDT01,"^$|pattern")))      |
 # Length of Outcome Date
-(str_detect(ae1$AEDUR01,regex("Resolved or resolved with sequelae|Death",ignore_case = T)) & str_length(ae1$AEENDT01) != median(str_length(ae1$AEENDT01),na.rm = T)) |
+(str_detect(ae1$AEDUR01,regex("Resolved or resolved with sequelae|Death",ignore_case = T)) & str_length(ae1$AEENDT01) != median(str_length(ae1$AEENDT01),na.rm = T)) | is.na(ae1$AEENDT01) |
 # Outcome time
 (str_detect(ae1$AEDUR01,regex("Resolved or resolved with sequelae|Death",ignore_case = T)) & (str_detect(ae1$AEENTM01,"^$|pattern") & !str_detect(ae1$AEENTM02,regex("End Time Unknown",ignore_case = T)))) |
 # Investigator Acknowledgement Date
 (is.na(ae1$AEDTC03) | str_detect(ae1$AEDTC03,"^$|pattern"))    |
 # Length of Investigator Acknowledgement Date
-str_length(ae1$AEDTC03) != median(str_length(ae1$AEDTC03),na.rm = T),][,-c(1,3,5:13)] %>%
+str_length(ae1$AEDTC03) != median(str_length(ae1$AEDTC03),na.rm = T) | is.na(ae1$AEDTC03),][,-c(1,3,5:13)] %>%
   {if (params$label) (sjlabelled::label_to_colnames(.)) else .} %>%
   reactable(paginationType = "jump", striped = TRUE, highlight = TRUE, searchable = TRUE, filterable = TRUE,defaultPageSize = 6, resizable = TRUE,elementId = "ae1",height = 600,
      defaultColDef = colDef(align = "center",minWidth = 115),
@@ -240,7 +239,7 @@ str_length(ae1$AEDTC03) != median(str_length(ae1$AEDTC03),na.rm = T),][,-c(1,3,5
 `r if(is.character(params$data1)){knitr::asis_output("3. AEDTC01 (Site awareness date) should not be blank")}` `r if(is.character(params$data1)){colorize(ae1[(is.na(ae1$AEDTC01) | str_detect(ae1$AEDTC01,"^$|pattern")),]$Subject,"red")}`
 
 `r if(is.character(params$data1)){knitr::asis_output("4. Length of AEDTC01 (Site awareness date) should be")}` 
-`r if(is.character(params$data1)){median(str_length(ae1$AEDTC01),na.rm = T)}` `r if(is.character(params$data1)){colorize(ae1[(str_length(ae1$AEDTC01) != median(str_length(ae1$AEDTC01),na.rm = T)),]$Subject,"red")}`
+`r if(is.character(params$data1)){median(str_length(ae1$AEDTC01),na.rm = T)}` `r if(is.character(params$data1)){colorize(ae1[(str_length(ae1$AEDTC01) != median(str_length(ae1$AEDTC01),na.rm = T)) | is.na(ae1$AEDTC01),]$Subject,"red")}`
 
 `r if(is.character(params$data1)){knitr::asis_output("5. AEORES01(Is this adverse event an application site adverse event?) should be either Yes or No")}` `r if(is.character(params$data1)){colorize(ae1[!str_detect(ae1$AEORES01,regex("Yes|No",ignore_case = T)),]$Subject,"red")}`
 
@@ -259,7 +258,7 @@ str_length(ae1$AEDTC03) != median(str_length(ae1$AEDTC03),na.rm = T),][,-c(1,3,5
 
 `r if(is.character(params$data1)){knitr::asis_output("12. AESTDT01(Onset date) should not be blank")}` `r if(is.character(params$data1)){colorize(ae1[(is.na(ae1$AESTDT01) | str_detect(ae1$AESTDT01,"^$|pattern")),]$Subject,"red")}`
 
-`r if(is.character(params$data1)){knitr::asis_output("13. Length of AESTDT01 (Onset date) should be")}` `r if(is.character(params$data1)){median(str_length(ae1$AESTDT01),na.rm = T)}` `r if(is.character(params$data1)){colorize(ae1[(str_length(ae1$AESTDT01) != median(str_length(ae1$AESTDT01),na.rm = T)),]$Subject,"red")}`
+`r if(is.character(params$data1)){knitr::asis_output("13. Length of AESTDT01 (Onset date) should be")}` `r if(is.character(params$data1)){median(str_length(ae1$AESTDT01),na.rm = T)}` `r if(is.character(params$data1)){colorize(ae1[(str_length(ae1$AESTDT01) != median(str_length(ae1$AESTDT01),na.rm = T)) | is.na(ae1$AESTDT01),]$Subject,"red")}`
 
 `r if(is.character(params$data1)){knitr::asis_output("14. AESTTM01(Onset Time) and AESTTM02(Onset Time Unknown) should not be blank at the same time")}` `r if(is.character(params$data1)){colorize(ae1[str_detect(ae1$AESTTM02,"^$|pattern") & str_detect(ae1$AESTTM01,"^$|pattern"),]$Subject,"red")}`
 
@@ -287,13 +286,13 @@ str_length(ae1$AEDTC03) != median(str_length(ae1$AEDTC03),na.rm = T),][,-c(1,3,5
 
 `r if(is.character(params$data1)){knitr::asis_output("26. If AEDUR01(Outcome) is Resolved or resolved with sequelae or Death, AEENDT01(Outcome date) should not be blank")}` `r if(is.character(params$data1)){colorize(ae1[(str_detect(ae1$AEDUR01,regex("Resolved or resolved with sequelae|Death",ignore_case = T)) & (is.na(ae1$AEENDT01) | str_detect(ae1$AEENDT01,"^$|pattern"))),]$Subject,"red")}`
 
-`r if(is.character(params$data1)){knitr::asis_output("27. If AEDUR01(Outcome) is Resolved or resolved with sequelae or Death, Length of AEENDT01(Outcome date) should be")}` `r if(is.character(params$data1)){median(str_length(ae1$AEENDT01),na.rm = T)}` `r if(is.character(params$data1)){colorize(ae1[(str_detect(ae1$AEDUR01,regex("Resolved or resolved with sequelae|Death",ignore_case = T)) & str_length(ae1$AEENDT01) != median(str_length(ae1$AEENDT01),na.rm = T)),]$Subject,"red")}`
+`r if(is.character(params$data1)){knitr::asis_output("27. If AEDUR01(Outcome) is Resolved or resolved with sequelae or Death, Length of AEENDT01(Outcome date) should be")}` `r if(is.character(params$data1)){median(str_length(ae1$AEENDT01),na.rm = T)}` `r if(is.character(params$data1)){colorize(ae1[(str_detect(ae1$AEDUR01,regex("Resolved or resolved with sequelae|Death",ignore_case = T)) & str_length(ae1$AEENDT01) != median(str_length(ae1$AEENDT01),na.rm = T)) | is.na(ae1$AEENDT01),]$Subject,"red")}`
 
 `r if(is.character(params$data1)){knitr::asis_output("28. If AEDUR01(Outcome) is Resolved or resolved with sequelae or Death, AEENTM01(Outcome End Time) and AEENTM02(Outcome End Time Unknown) should be eithr blank or unknown")}` `r if(is.character(params$data1)){colorize(ae1[(str_detect(ae1$AEDUR01,regex("Resolved or resolved with sequelae|Death",ignore_case = T)) & (str_detect(ae1$AEENTM01,"^$|pattern") & !str_detect(ae1$AEENTM02,regex("End Time Unknown",ignore_case = T)))),]$Subject,"red")}`
 
 `r if(is.character(params$data1)){knitr::asis_output("29. AEDTC03(Investigator Acknowledgement) should not be blank")}` `r if(is.character(params$data1)){colorize(ae1[(is.na(ae1$AEDTC03) | str_detect(ae1$AEDTC03,"^$|pattern")),]$Subject,"red")}`
 
-`r if(is.character(params$data1)){knitr::asis_output("30. Length of AEDTC03(Investigator Acknowledgement) should be")}` `r if(is.character(params$data1)){median(str_length(ae1$AEDTC03),na.rm = T)}` `r if(is.character(params$data1)){colorize(ae1[(str_length(ae1$AEDTC03) != median(str_length(ae1$AEDTC03),na.rm = T)),]$Subject,"red")}`
+`r if(is.character(params$data1)){knitr::asis_output("30. Length of AEDTC03(Investigator Acknowledgement) should be")}` `r if(is.character(params$data1)){median(str_length(ae1$AEDTC03),na.rm = T)}` `r if(is.character(params$data1)){colorize(ae1[(str_length(ae1$AEDTC03) != median(str_length(ae1$AEDTC03),na.rm = T)) | is.na(ae1$AEDTC03),]$Subject,"red")}`
 
 <!-- # AE2 Review -->
 
@@ -980,7 +979,7 @@ str_detect(mh$MHORRES2,regex("Yes",ignore_case = T)) & (!str_detect(mh$MHDTC1,re
 <!-- [Protocol Deviation Report](//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_PD_RevA.pdf) -->
 
 ```{r Load pd, eval = is.character(params$data9)}
-# pd <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\114\pd.sas7bdat)"))
+# pd <- read_sas(gsub("\\\\", "/", r"(\\wf00168p.oneabbott.com\data1\CDM\ADC-US-RES-16157_InHouse Sensor\OpenClinicaExtract\Current\119\pd.sas7bdat)"))
 pd <- read_sas(params$data9)
 pd <- pd %>% 
       filter(!str_detect(DVYN,regex("CHECK HERE IF NO DATA RECORDED|no_data_recorded",ignore_case = T))) %>%
@@ -1002,7 +1001,7 @@ str_length(pd$DVSEQ01) != median(str_length(pd$DVSEQ01),na.rm = T)  |
 # Name of person reporting (print)
 str_detect(pd$DVRPTR,"^$|pattern")                                  |
 # Date Reported
-str_length(pd$DVDTC2) != median(str_length(pd$DVDTC2),na.rm = T)    |
+str_length(pd$DVDTC2) != median(str_length(pd$DVDTC2),na.rm = T) | is.na(pd$DVDTC2)    |
 # Type of deviation
 (str_detect(pd$DVTERM,"^$|pattern")  & str_detect(pd$DVCOM1,"^$|pattern"))  |                     
 # Description of Deviation
@@ -1040,7 +1039,7 @@ str_length(pd$DVDTC3) != median(str_length(pd$DVDTC3),na.rm = T) | is.na(pd$DVDT
 
 `r if(is.character(params$data9)){knitr::asis_output("3. DVRPTR(Name of person reporting) should not be blank")}` `r if(is.character(params$data9)){colorize(pd[str_detect(pd$DVRPTR,"^$|pattern"),]$Subject,"red")}`
 
-`r if(is.character(params$data9)){knitr::asis_output("4. The length of DVDTC2(Date Reported) should be")}` `r if(is.character(params$data9)){median(str_length(pd$DVDTC2),na.rm = T)}` `r if(is.character(params$data9)){colorize(pd[str_length(pd$DVDTC2) != median(str_length(pd$DVDTC2),na.rm = T),]$Subject,"red")}`
+`r if(is.character(params$data9)){knitr::asis_output("4. The length of DVDTC2(Date Reported) should be")}` `r if(is.character(params$data9)){median(str_length(pd$DVDTC2),na.rm = T)}` `r if(is.character(params$data9)){colorize(pd[str_length(pd$DVDTC2) != median(str_length(pd$DVDTC2),na.rm = T) | is.na(pd$DVDTC2),]$Subject,"red")}`
 
 `r if(is.character(params$data9)){knitr::asis_output("5. DVTERM(Type of deviation) and DVCOM1(Other specify) should not be blank at the same time")}` `r if(is.character(params$data9)){colorize(pd[str_detect(pd$DVTERM,"^$|pattern")  & str_detect(pd$DVCOM1,"^$|pattern") ,]$Subject,"red")}`
 

@@ -74,7 +74,7 @@ server <- function(input, output, session) {
   text <- reactive({
     req(input$study)
     
-    exists <- input$study %in% c(str_c("0",as.character(seq(47,99))),as.character(seq(100,120)))
+    exists <- input$study %in% c(str_c("0",as.character(seq(47,99))),as.character(seq(100,119)))
     feedbackWarning("study",!exists,"Unkown Study")
     req(exists,cancelOutput = FALSE)
     

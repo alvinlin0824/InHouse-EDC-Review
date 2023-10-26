@@ -1,5 +1,5 @@
 ---
-title: "InHouse 23238 `r params$Study` EDC Review"
+title: "InHouse 16157 `r params$Study` EDC Review"
 author: "Alvin, Lin" 
 date: "`r Sys.Date()`"
 output: 
@@ -8,7 +8,7 @@ output:
       toc_float: true
 
 params:
-    Study: IH001
+    Study: IH089
     label: FALSE
     data1:
       label: "Upload ae1 :"

@@ -7,7 +7,7 @@ options(shiny.maxRequestSize = 30*1024^2)
 
 ui <- fluidPage(
   theme = bslib::bs_theme(bootswatch = "minty"),
-  titlePanel("InHouse 23238 EDC Review"),
+  titlePanel("InHouse 16157 EDC Review"),
   useShinyFeedback(),
   a(span("Please email Alvin Lin if you run into any issues",style = "color:black"),href = "mailto:alvin.lin@abbott.com"),
   fluidRow(column(width = 12,
@@ -74,12 +74,12 @@ server <- function(input, output, session) {
   text <- reactive({
     req(input$study)
     
-    exists <- input$study %in% c(str_c("00",as.character(seq(1,5))))
+    exists <- input$study %in% c(str_c("0",as.character(seq(47,99))),as.character(seq(100,119)))
     feedbackWarning("study",!exists,"Unkown Study")
     req(exists,cancelOutput = FALSE)
     
     # if (input$study %in% paste0("0",as.character(seq(47,91)))) {
-    cat(str_c("\\\\","wf00168p",".","oneabbott",".","com","\\","data1","\\","CDM","\\","ADC-US-RES-23238","\\","OpenClinicaExtract","\\","Current","\\",input$study))
+    cat(str_c("\\\\","wf00168p",".","oneabbott",".","com","\\","data1","\\","CDM","\\","ADC-US-RES-16157_InHouse Sensor","\\","OpenClinicaExtract","\\","Current","\\",input$study))
     # }
   })
   
@@ -91,20 +91,20 @@ server <- function(input, output, session) {
     rclipButton(
       inputId = "clipbtn",
       label = "Copy Path",
-      clipText = str_c("\\\\","wf00168p",".","oneabbott",".","com","\\","data1","\\","CDM","\\","ADC-US-RES-23238","\\","OpenClinicaExtract","\\","Current","\\",input$study), 
+      clipText = str_c("\\\\","wf00168p",".","oneabbott",".","com","\\","data1","\\","CDM","\\","ADC-US-RES-16157_InHouse Sensor","\\","OpenClinicaExtract","\\","Current","\\",input$study), 
       icon = icon("clipboard")
     )
   })
   
   if (interactive()){
-    observeEvent(input$clipbtn, clipr::write_clip(str_c("\\\\","wf00168p",".","oneabbott",".","com","\\","data1","\\","CDM","\\","ADC-US-RES-23238","\\","OpenClinicaExtract","\\","Current","\\",input$study)))
+    observeEvent(input$clipbtn, clipr::write_clip(str_c("\\\\","wf00168p",".","oneabbott",".","com","\\","data1","\\","CDM","\\","ADC-US-RES-16157_InHouse Sensor","\\","OpenClinicaExtract","\\","Current","\\",input$study)))
   }
   
   
   ## Download Report
   output$download <- downloadHandler(
     filename = function(){
-      str_c("InHouse 23238 ",input$study," EDC Review Report ",Sys.Date(),".html")
+      str_c("InHouse 16157 ",input$study," EDC Review Report ",Sys.Date(),".html")
     }, #"InHouse 16157 EDC Review Report.html",
     content = function(file){
       params <- list(Study = input$study,

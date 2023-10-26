@@ -1,5 +1,5 @@
 ---
-title: "InHouse 16157 `r params$Study` EDC Review"
+title: "InHouse 23238 `r params$Study` EDC Review"
 author: "Alvin, Lin" 
 date: "`r Sys.Date()`"
 output: 
@@ -8,7 +8,7 @@ output:
       toc_float: true
 
 params:
-    Study: IH089
+    Study: IH001
     label: FALSE
     data1:
       label: "Upload ae1 :"
@@ -137,7 +137,6 @@ colorize <- function(x, color) {
 <!-- # AE1 Review -->
 
 `r if(is.character(params$data1)){knitr::asis_output("# **AE1 Review**")}`
-
 `r if(is.character(params$data1)){htmltools::a("Adverse Event Report",href = "//oneabbott.com/dept/ADC/Technical_OPS/Clinical_Affairs/Clinical Study Files/Sensor Systems/ADC-US-RES-16157_InHouse Sensor/CDM/Database/CRF Load Files/aCRFS/ADC-US-RES-16157_AE_RevA.pdf")}`
 
 ```{r Load ae1, eval = is.character(params$data1)}

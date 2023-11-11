@@ -1,3 +1,1 @@
-# InHouse-EDC-Review
-# Deploy to GitHub
-# Update Adhesive Log and Skin Assessment
+# ADC-US-RES-16157 EDC Review
